@@ -1,6 +1,6 @@
-import { colors, fonts, spacing, typography } from "@/themes";
-import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+
+import { colors, fonts, spacing, typography } from "@/themes";
 import StageList from "./StageList";
 
 export default function SectionIndex() {

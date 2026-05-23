@@ -1,24 +1,20 @@
+import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
+
 import { colors, fonts, radius, spacing, typography } from "@/themes";
-import {
-  Pressable,
-  PressableProps,
-  Settings,
-  StyleSheet,
-  Text,
-} from "react-native";
 import { AlbumIcon, PlusIcon, SearchIcon, SettingsIcon } from "./Icon";
 
 type IconName = "search" | "album" | "plus" | "settings";
 
-type Props = {
+type Props = PressableProps & {
   icon: IconName;
   text?: string;
 };
 
-export function ButtonIcon({ icon, text }: Props) {
+export function ButtonIcon({ icon, text, ...props }: Props) {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+      {...props}
     >
       <Icon icon={icon} />
       {text && <Text style={styles.buttonText}>{text}</Text>}

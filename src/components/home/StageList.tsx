@@ -1,8 +1,8 @@
-import { colors, fonts, radius, spacing, typography } from "@/themes";
-import { ChevronRightIcon, CircleIcon } from "@/ui/components/Icon";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-type Stage = "precatechumenate" | "liturgy" | "catechumenate" | "election";
+import { colors, fonts, radius, spacing, typography } from "@/themes";
+import { ChevronRightIcon, CircleIcon } from "@/components";
+import { Stage } from "@/types/song";
 
 const stages: Stage[] = [
   "precatechumenate",
@@ -27,6 +27,7 @@ export default function StageList() {
             styles.stageItem,
             pressed && styles.stageItemPressed,
           ]}
+          key={stage}
         >
           <View style={styles.stageItemLeft}>
             <CircleIcon size={16} color={colors[stage]} />
