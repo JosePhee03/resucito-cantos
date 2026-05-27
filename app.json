@@ -17,7 +17,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.resucitocantos"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,11 +26,15 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.resucitocantos"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font", "expo-router"]
+    "plugins": [
+      "expo-font",
+      "expo-router"
+    ]
   }
 }
