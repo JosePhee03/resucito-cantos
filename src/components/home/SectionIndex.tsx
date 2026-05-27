@@ -5,9 +5,9 @@ import StageList from "./StageList";
 
 export default function SectionIndex() {
   return (
-    <View style={styles.section}>
+    <View style={styles.container}>
       <View style={styles.sectionHearder}>
-        <Text style={styles.sectionHearderTitle}>Índice</Text>
+        <Text style={styles.sectionHearderTitle}>Pasos del Camino</Text>
       </View>
       <StageList />
     </View>
@@ -15,15 +15,15 @@ export default function SectionIndex() {
 }
 
 const styles = StyleSheet.create({
-  section: {
-    paddingHorizontal: spacing.md,
+  container: {
+    gap: spacing.sm,
   },
   sectionHearder: {
-    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.sm,
   },
   sectionHearderTitle: {
-    fontFamily: fonts.inter.medium,
-    fontSize: typography.lg,
-    color: colors.title,
+    fontFamily: fonts.medium,
+    fontSize: typography.md,
+    color: colors.text,
   },
 });

@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
-import { ChevronRightIcon, CircleIcon } from "@/components";
 import { Stage } from "@/types/song";
+import Icon from "../Icon";
 
 const stages: Stage[] = [
   "precatechumenate",
@@ -20,8 +20,8 @@ const stageLang: Record<Stage, string> = {
 
 export default function StageList() {
   return (
-    <View style={styles.stageList}>
-      {stages.map((stage) => (
+    <View style={styles.container}>
+      {stages.map((stage, index) => (
         <Pressable
           style={({ pressed }) => [
             styles.stageItem,
@@ -29,13 +29,24 @@ export default function StageList() {
           ]}
           key={stage}
         >
-          <View style={styles.stageItemLeft}>
-            <CircleIcon size={16} color={colors[stage]} />
+          <Icon
+            name="circle"
+            size={16}
+            color={colors[stage]}
+            fill={colors[stage]}
+          />
+
+          <View
+            style={[
+              styles.stageItemContent,
+              index !== stages.length - 1 && styles.stageItemContentBorder,
+            ]}
+          >
             <Text style={styles.stageItemTitle}>{stageLang[stage]}</Text>
-          </View>
-          <View style={styles.stageItemRight}>
-            <Text style={styles.stageItemTotalNumber}>0</Text>
-            <ChevronRightIcon color={colors.foreground} />
+            <View style={styles.stageItemRight}>
+              <Text style={styles.stageItemTotalNumber}>0</Text>
+              <Icon name="chevron-right" color={colors.textTertiary} />
+            </View>
           </View>
         </Pressable>
       ))}
@@ -44,37 +55,43 @@ export default function StageList() {
 }
 
 const styles = StyleSheet.create({
-  stageList: {
-    gap: spacing.sm,
+  container: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    overflow: "hidden",
   },
   stageItem: {
-    height: 48,
-    backgroundColor: colors.surface,
-    paddingHorizontal: spacing.sm,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: radius.sm,
+    gap: spacing.sm,
+    paddingHorizontal: spacing.sm,
   },
   stageItemPressed: {
     backgroundColor: colors.pressed,
   },
-  stageItemLeft: {
+  stageItemContent: {
+    flex: 1,
+    height: 44,
+    justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
+  },
+  stageItemContentBorder: {
+    borderBottomWidth: 1,
+    borderColor: colors.border,
   },
   stageItemTitle: {
-    fontFamily: fonts.inter.medium,
+    fontFamily: fonts.regular,
     fontSize: typography.md,
   },
   stageItemRight: {
     flexDirection: "row",
-    alignItems: "center",
     gap: spacing.xs,
   },
   stageItemTotalNumber: {
-    fontFamily: fonts.inter.regular,
+    fontFamily: fonts.regular,
     fontSize: typography.sm,
+    color: colors.textTertiary,
   },
 });
