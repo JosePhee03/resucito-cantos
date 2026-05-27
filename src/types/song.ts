@@ -1,36 +1,11 @@
-export interface Song {
-  id: string;
-  page: number;
-  title: string;
-  subtitle: string;
-  capo: number;
-  stage: Stage;
-  categories: Category[];
-  lyric: string;
-  chords: Chord[];
-  tone: Chord;
-}
+import { categorySchema, songSchema, stageSchema } from "@/schemas/song.schema";
+import z from "zod";
 
-export type Stage =
-  | "precatechumenate"
-  | "liturgy"
-  | "catechumenate"
-  | "election";
+export type Song = z.infer<typeof songSchema>;
 
-export type Category =
-  | "communion"
-  | "easter"
-  | "entrance"
-  | "pentecost"
-  | "lent"
-  | "lutes_and_vespers"
-  | "exit"
-  | "christmas"
-  | "childrens_song"
-  | "peace_and_offerings"
-  | "fraction_of_bread"
-  | "signing_to_the_virgin"
-  | "advent";
+export type Stage = z.infer<typeof stageSchema>;
+
+export type Category = z.infer<typeof categorySchema>;
 
 export type Chord =
   | "Am"

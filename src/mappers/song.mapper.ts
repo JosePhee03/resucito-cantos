@@ -1,0 +1,20 @@
+import { songSchema, songsSchema } from "@/schemas/song.schema";
+import { Song } from "@/types/song";
+
+export function toSong(data: any): Song {
+  try {
+    const song = songSchema.parse(data);
+    return song;
+  } catch (error) {
+    throw Error("ERROR DE TIPEO");
+  }
+}
+
+export function toSongs(data: any[]): Song[] {
+  try {
+    const songs = songsSchema.parse(data);
+    return songs;
+  } catch (error) {
+    throw Error("ERROR DE TIPEO");
+  }
+}
