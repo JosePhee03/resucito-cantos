@@ -1,10 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Link, router } from "expo-router";
 
-import { colors, fonts, spacing, typography } from "@/themes";
+import { colors, fonts, radius, spacing, typography } from "@/themes";
 import { SectionIndex } from "@/components/home";
-import { Link } from "expo-router";
-import { SearchBar } from "@/components";
+import Icon from "@/components/Icon";
 
 export default function HomeScreen() {
   return (
@@ -14,9 +14,7 @@ export default function HomeScreen() {
         <View style={styles.content}>
           <View style={{ gap: spacing.sm }}>
             <Text style={styles.contentTitle}>Índice</Text>
-            <Link href={"/search"} asChild>
-              <SearchBar editable={false} />
-            </Link>
+            <ButtomSearch />
           </View>
           <SectionIndex />
         </View>
@@ -25,15 +23,48 @@ export default function HomeScreen() {
   );
 }
 
-const Header = () => {
+function Header() {
   return (
     <View style={styles.header}>
       <Text style={styles.headerTitle}>Resucitó</Text>
     </View>
   );
-};
+}
+
+function ButtomSearch() {
+  return (
+    <Pressable
+      onPress={() => router.push("/search")}
+      style={({ pressed }) => [
+        styles.buttonSearch,
+        pressed && styles.buttonPressed,
+      ]}
+    >
+      <Icon name="search" size={24} color={colors.foregroundSecondary} />
+      <Text style={styles.buttonSearchText}>Buscar cantos</Text>
+    </Pressable>
+  );
+}
 
 const styles = StyleSheet.create({
+  buttonSearch: {
+    height: 40,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.sm,
+    backgroundColor: colors.surfaceSecondary,
+    position: "relative",
+  },
+  buttonSearchText: {
+    fontFamily: fonts.regular,
+    fontSize: typography.md,
+    color: colors.text,
+  },
+  buttonPressed: {
+    backgroundColor: colors.pressed,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.background,
