@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   buttonSearchText: {
     fontFamily: fonts.regular,
     fontSize: typography.md,
-    color: colors.text,
+    color: colors.foregroundSecondary,
   },
   buttonPressed: {
     backgroundColor: colors.pressed,
