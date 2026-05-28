@@ -1,6 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
 import { SectionIndex } from "@/components/home";
@@ -14,7 +14,7 @@ export default function HomeScreen() {
         <View style={styles.content}>
           <View style={{ gap: spacing.sm }}>
             <Text style={styles.contentTitle}>Índice</Text>
-            <ButtomSearch />
+            <ButtonSearch />
           </View>
           <SectionIndex />
         </View>
@@ -31,7 +31,7 @@ function Header() {
   );
 }
 
-function ButtomSearch() {
+function ButtonSearch() {
   return (
     <Pressable
       onPress={() => router.push("/search")}
