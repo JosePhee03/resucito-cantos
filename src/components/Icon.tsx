@@ -8,7 +8,7 @@ type IconName =
   | "circle"
   | "chevron-right"
   | "chevron-left"
-  | "list-filter";
+  | "close";
 
 type IconProps = SvgProps & {
   name: IconName;
@@ -51,8 +51,8 @@ export default function Icon({
       return <ChevronRightIcon {...svgIconProps} />;
     case "chevron-left":
       return <ChevronLeftIcon {...svgIconProps} />;
-    case "list-filter":
-      return <ListFiltIcon {...svgIconProps} />;
+    case "close":
+      return <CloseIcon {...svgIconProps} />;
   }
 }
 
@@ -101,8 +101,8 @@ const ChevronLeftIcon = (props: SvgIconProps) => (
   </Svg>
 );
 
-const ListFiltIcon = (props: SvgIconProps) => (
+const CloseIcon = (props: SvgIconProps) => (
   <Svg {...props}>
-    <Path d="M2 5h20M6 12h12M9 19h6" />
+    <Path d="M18 6 6 18M6 6l12 12" />
   </Svg>
 );
