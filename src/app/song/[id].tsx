@@ -22,7 +22,7 @@ export default function SongScreen() {
       }}
     >
       <View style={{ ...styles.header, paddingTop: insets.top }}>
-        <TopBar title="A la victima pascual" />
+        <TopBar title={song?.title ?? ""} />
       </View>
       {song !== undefined ? (
         <Content song={toSong(song)} />
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   page: {
-    fontFamily: fonts.bold,
+    fontFamily: fonts.semibold,
     fontSize: typography.lg,
     color: colors.textSecondary,
   },
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: fonts.medium,
     fontSize: typography.md,
-    color: colors.text,
+    color: colors.textTertiary,
   },
   capo: {
     fontFamily: fonts.regular,

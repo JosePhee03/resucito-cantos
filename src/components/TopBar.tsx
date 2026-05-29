@@ -29,10 +29,14 @@ function ColCenter({ title }: { title: string }) {
   return (
     <View style={styles.columnCenter}>
       <Text
+        lineBreakMode="tail"
+        numberOfLines={1}
         style={{
           color: colors.text,
           fontFamily: fonts.semibold,
           fontSize: typography.sm,
+          width: 180,
+          textAlign: "center",
         }}
       >
         {title}

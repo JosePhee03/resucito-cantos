@@ -59,7 +59,11 @@ export default function StageList() {
               <Text style={styles.stageItemTotalNumber}>
                 {totalSongsByStage[stage]}
               </Text>
-              <Icon name="chevron-right" color={colors.foregroundSecondary} />
+              <Icon
+                name="chevron-right"
+                strokeWidth={1}
+                color={colors.foregroundSecondary}
+              />
             </View>
           </View>
         </Pressable>

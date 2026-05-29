@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
     fontSize: typography.sm,
   },
   subtitleText: {
-    fontFamily: fonts.semibold,
+    fontFamily: fonts.medium,
     color: colors.textSecondary,
     fontSize: typography.sm,
   },
   liricText: {
-    fontFamily: fonts.medium,
+    fontFamily: fonts.regular,
     color: colors.text,
     fontSize: typography.sm,
   },
