@@ -1,7 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "./Icon";
-import { colors, fonts, spacing, typography } from "@/themes";
 import { router } from "expo-router";
+
+import { colors, fonts, spacing, typography } from "@/themes";
+import Icon from "./Icon";
 
 export default function TopBar({ title }: { title: string }) {
   return (
