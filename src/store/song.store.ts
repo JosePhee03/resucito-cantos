@@ -2,8 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand/react";
 
-import { Song, SongsByStage, Stage } from "@/types/song";
-import { toSongs } from "@/mappers/song.mapper";
+import { Song, SongsByStage, Stage } from "@/domain/song/song";
+import { toSongs } from "@/domain/song/song.mapper";
 import SONGS_STORAGE from "@/data/es_2019_v2.json";
 
 interface SongStoreState {

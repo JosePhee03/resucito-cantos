@@ -1,4 +1,4 @@
-import { categorySchema, songSchema, stageSchema } from "@/schemas/song.schema";
+import { categorySchema, songSchema, stageSchema } from "./song.schema";
 import z from "zod";
 
 export type Song = z.infer<typeof songSchema>;

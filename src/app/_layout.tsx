@@ -4,8 +4,8 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 
+import { useSongStore } from "@/store/song.store";
 import FONT_SOURCE from "@/themes/fonts";
-import { useSongStore } from "@/store/SongStore";
 
 SplashScreen.preventAutoHideAsync();
 

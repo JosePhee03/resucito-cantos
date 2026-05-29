@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
-import { SongsByStage, Stage } from "@/types/song";
+import { Stage } from "@/domain/song";
+import { useSongStore } from "@/store/song.store";
 import Icon from "../Icon";
-import { useSongStore } from "@/store/SongStore";
-import { router } from "expo-router";
 
 const stages: Stage[] = [
   "precatechumenate",

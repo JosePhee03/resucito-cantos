@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { colors, fonts, spacing, typography } from "@/themes";
 import StageList from "./StageList";
-import { useSongStore } from "@/store/SongStore";
 
 export default function SectionIndex() {
   return (

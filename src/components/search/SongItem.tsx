@@ -1,9 +1,8 @@
-import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
-import { Link, router } from "expo-router";
-import { Song } from "@/types/song";
+import { Song } from "@/domain/song";
 
 type SongItemProps = {
   song: Song;

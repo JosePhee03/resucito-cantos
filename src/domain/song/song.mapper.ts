@@ -1,5 +1,5 @@
-import { songSchema, songsSchema } from "@/schemas/song.schema";
-import { Song } from "@/types/song";
+import { songSchema, songsSchema } from "./song.schema";
+import { Song } from "./song";
 
 export function toSong(data: any): Song {
   try {

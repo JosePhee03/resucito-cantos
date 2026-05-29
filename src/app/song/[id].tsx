@@ -1,14 +1,11 @@
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import songs from "@/data/es_2019_v2.json";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import TopBar from "@/components/TopBar";
-import { colors, fonts, spacing, typography } from "@/themes";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
-import { Song } from "@/types/song";
-import { toSong } from "@/mappers/song.mapper";
+
+import { TopBar } from "@/components";
+import { colors, fonts, spacing, typography } from "@/themes";
+import { Song, toSong } from "@/domain/song";
+import songs from "@/data/es_2019_v2.json";
 
 export default function SongScreen() {
   const { id } = useLocalSearchParams();
