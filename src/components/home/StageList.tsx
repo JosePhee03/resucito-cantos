@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
-import { Stage } from "@/types/song";
+import { SongsByStage, Stage } from "@/types/song";
 import Icon from "../Icon";
 
 const stages: Stage[] = [
@@ -18,7 +18,11 @@ const stageLang: Record<Stage, string> = {
   election: "Elección",
 };
 
-export default function StageList() {
+export default function StageList({
+  totalStage,
+}: {
+  totalStage: Record<Stage, number>;
+}) {
   return (
     <View style={styles.container}>
       {stages.map((stage, index) => (
@@ -44,7 +48,9 @@ export default function StageList() {
           >
             <Text style={styles.stageItemTitle}>{stageLang[stage]}</Text>
             <View style={styles.stageItemRight}>
-              <Text style={styles.stageItemTotalNumber}>0</Text>
+              <Text style={styles.stageItemTotalNumber}>
+                {totalStage[stage]}
+              </Text>
               <Icon name="chevron-right" color={colors.textTertiary} />
             </View>
           </View>

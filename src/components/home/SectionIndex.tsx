@@ -2,14 +2,17 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { colors, fonts, spacing, typography } from "@/themes";
 import StageList from "./StageList";
+import { useSongStore } from "@/store/SongStore";
 
 export default function SectionIndex() {
+  const totalSongsByStage = useSongStore.getState().totalSongsByStage;
+
   return (
     <View style={styles.container}>
       <View style={styles.sectionHearder}>
         <Text style={styles.sectionHearderTitle}>Pasos del Camino</Text>
       </View>
-      <StageList />
+      <StageList totalStage={totalSongsByStage} />
     </View>
   );
 }
