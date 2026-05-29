@@ -7,6 +7,8 @@ export type Stage = z.infer<typeof stageSchema>;
 
 export type Category = z.infer<typeof categorySchema>;
 
+export type SongsByStage = Record<Stage, Song[]>;
+
 export type Chord =
   | "Am"
   | "A7"
