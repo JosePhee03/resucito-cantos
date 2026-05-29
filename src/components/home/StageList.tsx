@@ -59,7 +59,7 @@ export default function StageList() {
               <Text style={styles.stageItemTotalNumber}>
                 {totalSongsByStage[stage]}
               </Text>
-              <Icon name="chevron-right" color={colors.textTertiary} />
+              <Icon name="chevron-right" color={colors.foregroundSecondary} />
             </View>
           </View>
         </Pressable>
@@ -106,6 +106,6 @@ const styles = StyleSheet.create({
   stageItemTotalNumber: {
     fontFamily: fonts.regular,
     fontSize: typography.sm,
-    color: colors.textTertiary,
+    color: colors.foregroundSecondary,
   },
 });

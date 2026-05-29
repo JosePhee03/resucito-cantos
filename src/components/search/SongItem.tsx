@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: typography.sm,
   },
   subtitleText: {
-    fontFamily: fonts.medium,
+    fontFamily: fonts.semibold,
     color: colors.textSecondary,
     fontSize: typography.sm,
   },

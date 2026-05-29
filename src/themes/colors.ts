@@ -1,7 +1,7 @@
 import { palettes } from "./palettes";
 
 export const colors = {
-  background: "#F6F6F6",
+  background: "#F2F2F2",
   surface: palettes.white,
   foreground: palettes.neutral800,
 
