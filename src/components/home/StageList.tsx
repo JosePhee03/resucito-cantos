@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, fonts, radius, spacing, typography } from "@/themes";
 import { SongsByStage, Stage } from "@/types/song";
 import Icon from "../Icon";
+import { useSongStore } from "@/store/SongStore";
+import { router } from "expo-router";
 
 const stages: Stage[] = [
   "precatechumenate",
@@ -18,15 +20,21 @@ const stageLang: Record<Stage, string> = {
   election: "Elección",
 };
 
-export default function StageList({
-  totalStage,
-}: {
-  totalStage: Record<Stage, number>;
-}) {
+export default function StageList() {
+  const totalSongsByStage = useSongStore.getState().totalSongsByStage;
+
   return (
     <View style={styles.container}>
       {stages.map((stage, index) => (
         <Pressable
+          onPress={() =>
+            router.push({
+              pathname: "/search",
+              params: {
+                stage: stage,
+              },
+            })
+          }
           style={({ pressed }) => [
             styles.stageItem,
             pressed && styles.stageItemPressed,
@@ -49,7 +57,7 @@ export default function StageList({
             <Text style={styles.stageItemTitle}>{stageLang[stage]}</Text>
             <View style={styles.stageItemRight}>
               <Text style={styles.stageItemTotalNumber}>
-                {totalStage[stage]}
+                {totalSongsByStage[stage]}
               </Text>
               <Icon name="chevron-right" color={colors.textTertiary} />
             </View>
