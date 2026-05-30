@@ -6,18 +6,18 @@ import { Song } from "@/domain/song";
 
 type SongItemProps = {
   song: Song;
-  index: number;
-  size: number;
 };
 
-export default function SongItem({ song, index, size }: SongItemProps) {
+export default function SongItem({ song }: SongItemProps) {
   return (
     <Pressable
       onPress={() => router.push(`/song/${song.id}`)}
       style={({ pressed }) => [pressed && styles.songItemPressed]}
     >
       <View style={styles.songItem}>
-        <View style={styles.pageBadge}>
+        <View
+          style={{ ...styles.pageBadge, backgroundColor: colors[song.stage] }}
+        >
           <Text style={styles.pageText}>{song.page}</Text>
         </View>
         <View style={styles.songDeteails}>
@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.sm,
-    backgroundColor: colors.precatechumenate,
   },
   songDeteails: {
     flex: 1,
