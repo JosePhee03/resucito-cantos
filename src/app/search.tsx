@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -10,6 +10,7 @@ import {
   Keyboard,
   ActivityIndicator,
   View,
+  InteractionManager,
 } from "react-native";
 import {
   SafeAreaView,
@@ -56,13 +57,19 @@ export default function SearchScreen() {
   const { debounced: debouncedQuery, loading } = useDebounce(query, 300);
   const navigationLock = useRef(false);
 
-  useFocusEffect(() => {
-    navigationLock.current = false;
-  });
+  useFocusEffect(
+    useCallback(() => {
+      navigationLock.current = false;
+    }, []),
+  );
 
   useEffect(() => {
-    setSearchSong(filteredSongs);
-    console.log({ STAGE: stage });
+    const id = requestAnimationFrame(() => {
+      setSearchSong(filteredSongs);
+    });
+    return () => {
+      cancelAnimationFrame(id);
+    };
   }, [debouncedQuery]);
 
   const filteredSongs = useMemo(() => {
@@ -88,11 +95,11 @@ export default function SearchScreen() {
     setQuery(text);
   };
 
-  const handleNavigationSong = (id: string) => {
+  const handleNavigationSong = useCallback((id: string) => {
     if (navigationLock.current) return;
     navigationLock.current = true;
     router.push(`/song/${id}`);
-  };
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
