@@ -32,7 +32,16 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font", "expo-router"],
-    "jsEngine": "hermes"
+    "plugins": [
+      "expo-font",
+      "expo-router"
+    ],
+    "jsEngine": "hermes",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c0b81cde-3483-4ff8-890b-019fa99d1c97"
+      }
+    }
   }
 }
