@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -15,12 +15,12 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { useLocalSearchParams } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 
 import { colors, fonts, spacing, typography } from "@/themes";
-import { SearchBar, SearchTopBar, SongItem } from "@/components/search";
 import { useSongStore } from "@/store/song.store";
 import { isStage, Song } from "@/domain/song";
+import { SearchBar, SearchTopBar, SongItem } from "@/components/search";
 
 type Params = {
   stage?: string;
@@ -54,9 +54,15 @@ export default function SearchScreen() {
   const { songs, songsByStage } = useSongStore.getState();
   const [searchSongs, setSearchSong] = useState<Song[]>([]);
   const { debounced: debouncedQuery, loading } = useDebounce(query, 300);
+  const navigationLock = useRef(false);
+
+  useFocusEffect(() => {
+    navigationLock.current = false;
+  });
 
   useEffect(() => {
     setSearchSong(filteredSongs);
+    console.log({ STAGE: stage });
   }, [debouncedQuery]);
 
   const filteredSongs = useMemo(() => {
@@ -82,6 +88,12 @@ export default function SearchScreen() {
     setQuery(text);
   };
 
+  const handleNavigationSong = (id: string) => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    router.push(`/song/${id}`);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchTopBar title={stage ?? "Todos los cantos"}>
@@ -100,7 +112,9 @@ export default function SearchScreen() {
         keyboardShouldPersistTaps="handled"
         data={searchSongs}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <SongItemMemo song={item} />}
+        renderItem={({ item }) => (
+          <SongItemMemo song={item} onPress={handleNavigationSong} />
+        )}
         removeClippedSubviews
         initialNumToRender={10}
         maxToRenderPerBatch={10}
@@ -118,9 +132,11 @@ export default function SearchScreen() {
   );
 }
 
-const SongItemMemo = memo(({ song }: { song: Song }) => {
-  return <SongItem song={song} />;
-});
+const SongItemMemo = memo(
+  ({ song, onPress }: { song: Song; onPress: (id: string) => void }) => {
+    return <SongItem song={song} onPress={onPress} />;
+  },
+);
 
 function Footer({ total, loading }: { total: number; loading: boolean }) {
   const insets = useSafeAreaInsets();

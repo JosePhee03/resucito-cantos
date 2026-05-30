@@ -1,5 +1,4 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { router } from "expo-router";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
 import { Stage } from "@/domain/song";
@@ -20,21 +19,18 @@ const stageLang: Record<Stage, string> = {
   election: "Elección",
 };
 
-export default function StageList() {
+type StageListProps = {
+  onPress: (stage?: Stage) => void;
+};
+
+export default function StageList({ onPress }: StageListProps) {
   const totalSongsByStage = useSongStore.getState().totalSongsByStage;
 
   return (
     <View style={styles.container}>
       {stages.map((stage, index) => (
         <Pressable
-          onPress={() =>
-            router.push({
-              pathname: "/search",
-              params: {
-                stage: stage,
-              },
-            })
-          }
+          onPress={() => onPress(stage)}
           style={({ pressed }) => [
             styles.stageItem,
             pressed && styles.stageItemPressed,

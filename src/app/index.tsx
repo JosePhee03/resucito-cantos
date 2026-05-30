@@ -1,12 +1,26 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
+import { Stage } from "@/domain/song";
 import { SectionIndex } from "@/components/home";
-import Icon from "@/components/Icon";
+import { Icon } from "@/components";
+import { useRef } from "react";
 
 export default function HomeScreen() {
+  const navigationLock = useRef(false);
+
+  useFocusEffect(() => {
+    navigationLock.current = false;
+  });
+
+  const handleNavigationSearch = (stage?: Stage) => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    router.push({ pathname: "/search", params: { stage } });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -14,9 +28,9 @@ export default function HomeScreen() {
         <View style={styles.content}>
           <View style={{ gap: spacing.sm }}>
             <Text style={styles.contentTitle}>Índice</Text>
-            <ButtonSearch />
+            <ButtonSearch onPress={handleNavigationSearch} />
           </View>
-          <SectionIndex />
+          <SectionIndex onPressItem={handleNavigationSearch} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -31,10 +45,10 @@ function Header() {
   );
 }
 
-function ButtonSearch() {
+function ButtonSearch({ onPress }: { onPress: () => void }) {
   return (
     <Pressable
-      onPress={() => router.push("/search")}
+      onPress={() => onPress()}
       style={({ pressed }) => [
         styles.buttonSearch,
         pressed && styles.buttonPressed,

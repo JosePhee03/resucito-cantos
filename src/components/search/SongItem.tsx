@@ -1,17 +1,17 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { router } from "expo-router";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
 import { Song } from "@/domain/song";
 
 type SongItemProps = {
   song: Song;
+  onPress: (id: string) => void;
 };
 
-export default function SongItem({ song }: SongItemProps) {
+export default function SongItem({ song, onPress }: SongItemProps) {
   return (
     <Pressable
-      onPress={() => router.push(`/song/${song.id}`)}
+      onPress={() => onPress(song.id)}
       style={({ pressed }) => [pressed && styles.songItemPressed]}
     >
       <View style={styles.songItem}>
