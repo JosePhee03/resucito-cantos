@@ -1,17 +1,37 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
 
 import { TopBar } from "@/components";
 import { colors, fonts, spacing, typography } from "@/themes";
 import { Song, toSong } from "@/domain/song";
-import songs from "@/data/es_2019_v2.json";
+import { useSongStore } from "@/store/song.store";
+import { useCallback, useEffect, useState } from "react";
 
 export default function SongScreen() {
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const song = songs.find((s) => s.id === id);
+  const songs = useSongStore.getState().songs;
+  const [song, setSong] = useState<Song | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      setSong(getSong());
+      setLoading(false);
+    });
+    return () => {
+      cancelAnimationFrame(id);
+    };
+  }, []);
+
+  const getSong = useCallback(() => songs.find((s) => s.id === id), []);
   return (
     <View
       style={{
@@ -26,6 +46,8 @@ export default function SongScreen() {
       </View>
       {song !== undefined ? (
         <Content song={toSong(song)} />
+      ) : loading ? (
+        <ActivityIndicator />
       ) : (
         <Text>NO ENCONTRADO</Text>
       )}
