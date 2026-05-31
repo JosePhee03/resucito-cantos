@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { colors, fonts, spacing, typography } from "@/themes";
 import Icon from "./Icon";
 
-export default function TopBar({ title }: { title: string }) {
+export default function TopBar({ title = "" }: { title?: string }) {
   return (
     <View style={styles.topBar}>
       <ColLeft />
@@ -46,13 +46,7 @@ function ColCenter({ title }: { title: string }) {
 }
 
 function ColRight() {
-  return (
-    <View style={styles.columnRight}>
-      <TouchableOpacity>
-        <Text style={styles.textIcon}>Filtros</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  return <View style={styles.columnRight}></View>;
 }
 
 const styles = StyleSheet.create({
