@@ -19,7 +19,7 @@ function ColLeft() {
     <View style={styles.columnLeft}>
       <TouchableOpacity onPress={router.back} style={{ flexDirection: "row" }}>
         <Icon size={24} name="chevron-left" color={colors.primary} />
-        <Text style={styles.textIcon}>Átras</Text>
+        <Text style={styles.textIcon}>Atrás</Text>
       </TouchableOpacity>
     </View>
   );
