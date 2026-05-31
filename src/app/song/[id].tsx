@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
 
 import { TopBar } from "@/components";
@@ -13,10 +13,10 @@ import { colors, fonts, spacing, typography } from "@/themes";
 import { Song, toSong } from "@/domain/song";
 import { useSongStore } from "@/store/song.store";
 import { useCallback, useEffect, useState } from "react";
+import Animated, { FadeInRight } from "react-native-reanimated";
 
 export default function SongScreen() {
   const { id } = useLocalSearchParams();
-  const insets = useSafeAreaInsets();
   const songs = useSongStore.getState().songs;
   const [song, setSong] = useState<Song | undefined>(undefined);
   const [loading, setLoading] = useState(true);
@@ -33,16 +33,9 @@ export default function SongScreen() {
 
   const getSong = useCallback(() => songs.find((s) => s.id === id), []);
   return (
-    <View
-      style={{
-        ...styles.container,
-        paddingBottom: insets.bottom,
-        paddingLeft: insets.left,
-        paddingRight: insets.right,
-      }}
-    >
-      <View style={{ ...styles.header, paddingTop: insets.top }}>
-        <TopBar title={song?.title ?? ""} />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TopBar />
       </View>
       {song !== undefined ? (
         <Content song={toSong(song)} />
@@ -51,7 +44,7 @@ export default function SongScreen() {
       ) : (
         <Text>NO ENCONTRADO</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -63,17 +56,23 @@ function Content({ song }: ContentProps) {
   const { page, title, subtitle, capo, lyric } = song;
   return (
     <ScrollView style={styles.content}>
-      <View style={styles.spacingSm}>
+      <Animated.View
+        entering={FadeInRight.duration(100).springify().damping(90)}
+        style={styles.spacingSm}
+      >
         <Text style={styles.page}>{page}</Text>
         <View>
           <Text style={styles.title}>{title.toUpperCase()}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
         <Text style={styles.capo}>{`Cejilla ${capo}° traste`}</Text>
-      </View>
-      <View style={{ paddingVertical: spacing.md }}>
+      </Animated.View>
+      <Animated.View
+        entering={FadeInRight.duration(120).springify().damping(80)}
+        style={{ paddingVertical: spacing.md }}
+      >
         <LyricSource source={lyric} />
-      </View>
+      </Animated.View>
     </ScrollView>
   );
 }
@@ -189,9 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   header: {
-    borderColor: colors.border,
-    borderBottomWidth: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
   },
   content: {
     backgroundColor: colors.surface,
