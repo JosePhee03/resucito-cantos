@@ -8,7 +8,8 @@ type IconName =
   | "circle"
   | "chevron-right"
   | "chevron-left"
-  | "close";
+  | "close"
+  | "music";
 
 type IconProps = SvgProps & {
   name: IconName;
@@ -53,6 +54,8 @@ export default function Icon({
       return <ChevronLeftIcon {...svgIconProps} />;
     case "close":
       return <CloseIcon {...svgIconProps} />;
+    case "music":
+      return <MusicIcon {...svgIconProps} />;
   }
 }
 
@@ -104,5 +107,13 @@ const ChevronLeftIcon = (props: SvgIconProps) => (
 const CloseIcon = (props: SvgIconProps) => (
   <Svg {...props}>
     <Path d="M18 6 6 18M6 6l12 12" />
+  </Svg>
+);
+
+const MusicIcon = (props: SvgIconProps) => (
+  <Svg {...props}>
+    <Path d="M9 18V5l12-2v13M9 9l12-2" />
+    <Circle cx={6} cy={18} r={3} />
+    <Circle cx={18} cy={16} r={3} />
   </Svg>
 );
