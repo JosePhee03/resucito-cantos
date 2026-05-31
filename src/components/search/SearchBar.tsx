@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
 import { colors, fonts, radius, spacing, typography } from "@/themes";
@@ -8,14 +8,22 @@ type SearchBarProps = {
   onChange: (query: string) => void;
   query: string;
   onClear: () => void;
+  focus: boolean;
 };
 
 export default function SearchBar({
   onChange,
   query,
   onClear,
+  focus,
 }: SearchBarProps) {
   const searchInputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    if (focus) {
+      searchInputRef.current?.focus();
+    }
+  }, [focus]);
 
   const handleOnSearch = () => {
     const ref = searchInputRef.current;

@@ -54,14 +54,25 @@ export default function SearchScreen() {
   const { stage } = useLocalSearchParams<Params>();
   const { songs, songsByStage } = useSongStore.getState();
   const [searchSongs, setSearchSong] = useState<Song[]>([]);
+  const [focus, setFocus] = useState(false);
   const { debounced: debouncedQuery, loading } = useDebounce(query, 300);
   const navigationLock = useRef(false);
 
   useFocusEffect(
     useCallback(() => {
       navigationLock.current = false;
-    }, []),
+    }, [stage]),
   );
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      if (stage == undefined) setFocus(true);
+      if (focus) setFocus(false);
+    });
+    return () => {
+      cancelAnimationFrame(id);
+    };
+  }, [stage]);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => {
@@ -108,6 +119,7 @@ export default function SearchScreen() {
           onChange={handleOnChange}
           query={query}
           onClear={handleOnClear}
+          focus={focus}
         />
       </SearchTopBar>
 
