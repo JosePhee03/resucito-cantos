@@ -10,7 +10,6 @@ import {
   Keyboard,
   ActivityIndicator,
   View,
-  InteractionManager,
 } from "react-native";
 import {
   SafeAreaView,
@@ -22,6 +21,7 @@ import { colors, fonts, spacing, typography } from "@/themes";
 import { useSongStore } from "@/store/song.store";
 import { isStage, Song } from "@/domain/song";
 import { SearchBar, SearchTopBar, SongItem } from "@/components/search";
+import { Icon } from "@/components";
 
 type Params = {
   stage?: string;
@@ -114,7 +114,7 @@ export default function SearchScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchTopBar title={stage ?? "Todos los cantos"}>
+      <SearchTopBar title={"Cantos"}>
         <SearchBar
           onChange={handleOnChange}
           query={query}
@@ -124,12 +124,13 @@ export default function SearchScreen() {
       </SearchTopBar>
 
       <FlatList
+        style={{ flex: 1, backgroundColor: colors.surface }}
         contentContainerStyle={{
-          backgroundColor: colors.surface,
-          paddingBottom: "25%",
+          paddingBottom: 100,
         }}
         keyboardShouldPersistTaps="handled"
         data={searchSongs}
+        ListEmptyComponent={() => !loading && <EmplyList />}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <SongItemMemo song={item} onPress={handleNavigationSong} />
@@ -156,6 +157,31 @@ const SongItemMemo = memo(
     return <SongItem song={song} onPress={onPress} />;
   },
 );
+
+const EmplyList = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        paddingTop: 64,
+      }}
+    >
+      <View style={{ alignItems: "center", gap: spacing.sm }}>
+        <Icon name="music" size={64} color={colors.foregroundSecondary} />
+        <Text
+          style={{
+            fontFamily: fonts.medium,
+            color: colors.foregroundSecondary,
+            fontSize: typography.md,
+          }}
+        >
+          Canto/s no encontrado/s
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 function Footer({ total, loading }: { total: number; loading: boolean }) {
   const insets = useSafeAreaInsets();
@@ -227,7 +253,6 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.background,
     borderTopWidth: 1,
     borderColor: colors.border,
     zIndex: 4,
