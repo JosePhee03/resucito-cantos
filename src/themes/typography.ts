@@ -1,8 +1,10 @@
+import { moderateScale as ms } from "react-native-size-matters";
+
 export const typography = {
-  xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 18,
-  xl: 24,
-  xxl: 32,
-};
+  xs: ms(12),
+  sm: ms(14),
+  md: ms(16),
+  lg: ms(18),
+  xl: ms(24),
+  xxl: ms(32),
+} as const;
