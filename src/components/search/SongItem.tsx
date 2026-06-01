@@ -31,9 +31,6 @@ export default function SongItem({ song, onPress }: SongItemProps) {
           >
             {song.subtitle}
           </Text>
-          <Text style={styles.liricText} numberOfLines={1} ellipsizeMode="tail">
-            {song.lyric.split("\n")[1]}
-          </Text>
         </View>
       </View>
     </Pressable>
