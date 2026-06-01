@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "resucito-cantos",
+    "name": "Resucitó Cantos",
     "slug": "resucito-cantos",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
@@ -18,7 +18,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.resucitocantos"
+      "bundleIdentifier": "com.resucitocantos.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,16 +26,13 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.resucitocantos"
+      "predictiveBackGestureEnabled": true,
+      "package": "com.resucitocantos.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font",
-      "expo-router"
-    ],
+    "plugins": ["expo-font", "expo-router"],
     "jsEngine": "hermes",
     "extra": {
       "router": {},
