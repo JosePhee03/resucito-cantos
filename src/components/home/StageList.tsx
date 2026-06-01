@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   stageItemContent: {
     flex: 1,
-    height: 44,
+    paddingVertical: spacing.sm,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   stageItemTitle: {
     fontFamily: fonts.regular,
     fontSize: typography.md,
+    color: colors.text,
   },
   stageItemRight: {
     flexDirection: "row",
