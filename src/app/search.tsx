@@ -33,6 +33,7 @@ function useDebounce<T>(value: string, delay = 300) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (debounced === "" && value === "") return;
     setLoading(true);
 
     const timeout = setTimeout(() => {
@@ -245,6 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   footer: {
+    backgroundColor: colors.background,
     position: "absolute",
     left: 0,
     right: 0,
@@ -253,8 +255,6 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     alignItems: "center",
     justifyContent: "center",
-    borderTopWidth: 1,
-    borderColor: colors.border,
     zIndex: 4,
   },
   title: {
