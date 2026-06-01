@@ -62,14 +62,13 @@ function ButtonSearch({ onPress }: { onPress: () => void }) {
 
 const styles = StyleSheet.create({
   buttonSearch: {
-    height: 40,
+    height: 36,
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.sm,
     paddingHorizontal: spacing.sm,
     borderRadius: radius.sm,
     backgroundColor: colors.surfaceSecondary,
-    position: "relative",
   },
   buttonSearchText: {
     fontFamily: fonts.regular,

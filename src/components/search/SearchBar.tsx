@@ -52,22 +52,24 @@ export default function SearchBar({
       >
         <Icon name="search" size={24} color={colors.foregroundSecondary} />
       </Pressable>
-      <TextInput
-        ref={searchInputRef}
-        onChangeText={handleOnChange}
-        value={query}
-        placeholder="Buscar"
-        placeholderTextColor={colors.foregroundSecondary}
-        style={styles.searchText}
-        returnKeyType="search"
-        accessible
-        accessibilityLabel="Campo de búsqueda"
-        accessibilityHint="Escribí para buscar cantos"
-        accessibilityRole="search"
-        autoCorrect={false}
-        autoCapitalize="none"
-        clearButtonMode="never"
-      />
+      <View style={styles.searchTextContainer}>
+        <TextInput
+          ref={searchInputRef}
+          onChangeText={handleOnChange}
+          value={query}
+          placeholder="Buscar"
+          placeholderTextColor={colors.foregroundSecondary}
+          style={styles.searchText}
+          returnKeyType="search"
+          accessible
+          accessibilityLabel="Campo de búsqueda"
+          accessibilityHint="Escribí para buscar cantos"
+          accessibilityRole="search"
+          autoCorrect={false}
+          autoCapitalize="none"
+          clearButtonMode="never"
+        />
+      </View>
       {query !== "" && <ButtonClear onClear={handleOnClear} />}
     </View>
   );
@@ -92,9 +94,9 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
   },
   searchInput: {
-    height: 40,
-    flexDirection: "row",
+    height: 36,
     alignItems: "center",
+    flexDirection: "row",
     borderRadius: radius.sm,
     backgroundColor: colors.surfaceSecondary,
     overflow: "hidden",
@@ -102,8 +104,14 @@ const styles = StyleSheet.create({
   buttonPressed: {
     backgroundColor: colors.pressed,
   },
-  searchText: {
+  searchTextContainer: {
     flex: 1,
+    position: "relative",
+    justifyContent: "center",
+  },
+  searchText: {
+    width: "100%",
+    position: "absolute",
     fontFamily: fonts.regular,
     fontSize: typography.md,
     color: colors.text,
