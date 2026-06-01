@@ -19,8 +19,6 @@ export default function SearchTopBar({ title, children }: SearchTopBarProps) {
 
 const styles = StyleSheet.create({
   header: {
-    borderBottomWidth: 1,
-    borderColor: colors.border,
     backgroundColor: colors.background,
     paddingBottom: spacing.sm,
   },

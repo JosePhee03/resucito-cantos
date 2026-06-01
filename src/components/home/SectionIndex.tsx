@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
   },
   sectionHearderTitle: {
-    fontFamily: fonts.medium,
+    fontFamily: fonts.semibold,
     fontSize: typography.md,
     color: colors.text,
   },
