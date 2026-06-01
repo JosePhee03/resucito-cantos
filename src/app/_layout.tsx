@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 
 import { useSongStore } from "@/store/song.store";
 import FONT_SOURCE from "@/themes/fonts";
+import { colors } from "@/themes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,7 +30,12 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: colors.primary },
+        }}
+      />
     </SafeAreaProvider>
   );
 }
