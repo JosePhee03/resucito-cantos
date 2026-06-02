@@ -84,10 +84,11 @@ const styles = StyleSheet.create({
   },
   content: {
     gap: spacing.lg,
-    padding: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xl,
   },
   header: {
-    height: 64,
+    height: 44,
     justifyContent: "center",
     paddingHorizontal: spacing.md,
   },
