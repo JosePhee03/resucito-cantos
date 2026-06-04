@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
   sectionHearderTitle: {
     fontFamily: fonts.semibold,
     fontSize: typography.md,
-    color: colors.text,
+    color: colors.textTertiary,
   },
 });
