@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 
 import { useSongStore } from "@/store/song.store";
 import FONT_SOURCE from "@/themes/fonts";
-import { colors } from "@/themes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,11 +27,10 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="dark" />
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: colors.primary },
+          statusBarStyle: "dark",
         }}
       />
     </SafeAreaProvider>
