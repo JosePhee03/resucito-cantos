@@ -2,8 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand/react";
 
-import { Song, SongsByStage, Stage } from "@/domain/song/song";
-import { toSongs } from "@/domain/song/song.mapper";
+import { isStage, toSongs, Song, SongsByStage, Stage } from "@/domain/song";
 import SONGS_STORAGE from "@/data/es_2019_v2.json";
 
 interface SongStoreState {
@@ -14,6 +13,7 @@ interface SongStoreState {
 }
 interface SongStoreFunction {
   initialize: () => void;
+  filteredSongs: (query: string, stage?: string) => Song[];
 }
 
 interface SongStore extends SongStoreState, SongStoreFunction {}
@@ -51,7 +51,7 @@ function groupTotalSongsByStage(stages: SongsByStage): Record<Stage, number> {
 
 export const useSongStore = create<SongStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...INIT_SONG_STORE,
       initialize: () => {
         const songsStorage = toSongs(SONGS_STORAGE);
@@ -64,6 +64,20 @@ export const useSongStore = create<SongStore>()(
           totalSongsByStage,
           songsByStage,
         }));
+      },
+      filteredSongs: (query, stage) => {
+        const { songsByStage, songs } = get();
+
+        if (!query) {
+          if (stage && isStage(stage)) {
+            return songsByStage[stage];
+          }
+          return songs;
+        }
+
+        const lowerQuery = query.toLowerCase();
+
+        return songs.filter((song) => song.title.toLowerCase().includes(query));
       },
     }),
     {
