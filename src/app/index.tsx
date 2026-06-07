@@ -2,7 +2,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect } from "expo-router";
 
-import { colors, fonts, radius, spacing, typography } from "@/themes";
+import { colors, fonts, radius, spacing, typography, CONSTANT } from "@/themes";
 import { Stage } from "@/domain/song";
 import { SectionIndex } from "@/components/home";
 import { Icon } from "@/components";
@@ -23,13 +23,25 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Header />
+      <Header />
+      <ScrollView stickyHeaderIndices={[1]}>
+        <View
+          style={{
+            paddingHorizontal: spacing.md,
+            paddingTop: spacing.sm,
+          }}
+        >
+          <Text style={styles.contentTitle}>Índice</Text>
+        </View>
+        <View
+          style={{
+            paddingVertical: spacing.sm,
+            paddingHorizontal: spacing.md,
+          }}
+        >
+          <ButtonSearch onPress={handleNavigationSearch} />
+        </View>
         <View style={styles.content}>
-          <View style={{ gap: spacing.sm }}>
-            <Text style={styles.contentTitle}>Índice</Text>
-            <ButtonSearch onPress={handleNavigationSearch} />
-          </View>
           <SectionIndex onPressItem={handleNavigationSearch} />
         </View>
       </ScrollView>
@@ -62,12 +74,12 @@ function ButtonSearch({ onPress }: { onPress: () => void }) {
 
 const styles = StyleSheet.create({
   buttonSearch: {
-    height: 36,
+    height: CONSTANT.SEARCHBAR,
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.sm,
     paddingHorizontal: spacing.sm,
-    borderRadius: radius.sm,
+    borderRadius: radius.lg,
     backgroundColor: colors.surfaceSecondary,
   },
   buttonSearchText: {
@@ -84,13 +96,13 @@ const styles = StyleSheet.create({
   },
   content: {
     gap: spacing.lg,
+    paddingVertical: spacing.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xl,
   },
   header: {
-    height: 44,
-    justifyContent: "center",
+    height: CONSTANT.HEADER,
     paddingHorizontal: spacing.md,
+    justifyContent: "center",
   },
   contentTitle: {
     fontFamily: fonts.bold,
@@ -99,7 +111,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: fonts.bold,
-    fontSize: typography.xxl,
+    fontSize: typography.xl,
     color: colors.primary,
   },
 });

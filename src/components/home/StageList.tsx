@@ -71,17 +71,8 @@ export default function StageList({ onPress }: StageListProps) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-
-    elevation: 1,
   },
   stageItem: {
     flexDirection: "row",
