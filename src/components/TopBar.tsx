@@ -33,7 +33,9 @@ function ColLeft() {
   return (
     <View style={styles.columnLeft}>
       <Pressable
-        onPress={router.back}
+        onPress={() =>
+          router.canGoBack() ? router.back() : router.navigate("/")
+        }
         style={({ pressed }) => [
           styles.buttonBack,
           pressed && styles.buttonBackPressed,
