@@ -1,15 +1,30 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { router } from "expo-router";
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 
-import { colors, fonts, spacing, typography } from "@/themes";
+import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import Icon from "./Icon";
 
-export default function TopBar({ title = "" }: { title?: string }) {
+type TopBarProps = {
+  title?: string;
+  rightToobar?: React.JSX.Element | React.JSX.Element[];
+  headerHidden?: SharedValue<boolean>;
+};
+
+export default function TopBar({
+  title = "",
+  rightToobar,
+  headerHidden,
+}: TopBarProps) {
   return (
     <View style={styles.topBar}>
       <ColLeft />
-      <ColCenter title={title} />
-      <ColRight />
+      <ColCenter title={title} headerHidden={headerHidden} />
+      <ColRight>{rightToobar}</ColRight>
     </View>
   );
 }
@@ -17,52 +32,64 @@ export default function TopBar({ title = "" }: { title?: string }) {
 function ColLeft() {
   return (
     <View style={styles.columnLeft}>
-      <TouchableOpacity onPress={router.back} style={{ flexDirection: "row" }}>
+      <Pressable
+        onPress={router.back}
+        style={({ pressed }) => [
+          styles.buttonBack,
+          pressed && styles.buttonBackPressed,
+        ]}
+      >
         <Icon size={24} name="chevron-left" color={colors.primary} />
         <Text style={styles.textIcon}>Atrás</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
 
-function ColCenter({ title }: { title: string }) {
+function ColCenter({
+  title,
+  headerHidden,
+}: {
+  title: string;
+  subtitle?: string;
+  headerHidden?: SharedValue<boolean>;
+}) {
+  const titleStyle = useAnimatedStyle(() => {
+    if (headerHidden === undefined) return {};
+    return {
+      opacity: withTiming(headerHidden.value ? 1 : 0),
+      transform: [
+        {
+          translateY: withTiming(headerHidden.value ? 0 : 4),
+        },
+      ],
+    };
+  });
+
   return (
-    <View style={styles.columnCenter}>
-      <Text
-        lineBreakMode="tail"
-        numberOfLines={1}
-        style={{
-          color: colors.text,
-          fontFamily: fonts.semibold,
-          fontSize: typography.sm,
-          width: 180,
-          textAlign: "center",
-        }}
-      >
+    <Animated.View style={[styles.columnCenter, titleStyle]}>
+      <Text lineBreakMode="tail" numberOfLines={1} style={styles.title}>
         {title}
       </Text>
-    </View>
+    </Animated.View>
   );
 }
 
-function ColRight() {
-  return <View style={styles.columnRight}></View>;
+function ColRight({
+  children,
+}: {
+  children?: React.JSX.Element | React.JSX.Element[];
+}) {
+  return <View style={styles.columnRight}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
-  header: {
-    borderBottomWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.background,
-    paddingBottom: spacing.sm,
-  },
   topBar: {
-    height: 48,
+    height: CONSTANT.HEADER,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: spacing.sm,
-    zIndex: 100,
   },
   textIcon: {
     fontFamily: fonts.medium,
@@ -71,16 +98,23 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
   },
   columnLeft: {
-    width: "50%",
     justifyContent: "center",
+    zIndex: 110,
+  },
+  buttonBack: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 32,
+    paddingRight: spacing.sm,
+  },
+  buttonBackPressed: {
+    opacity: 0.2,
   },
   columnRight: {
-    width: "50%",
-    height: "100%",
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    paddingRight: spacing.sm,
+    zIndex: 110,
   },
   columnCenter: {
     position: "absolute",
@@ -88,7 +122,10 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: "center",
   },
-  rowCenter: {
-    flexDirection: "row",
+  title: {
+    color: colors.text,
+    fontFamily: fonts.semibold,
+    fontSize: typography.sm,
+    width: 180,
   },
 });
