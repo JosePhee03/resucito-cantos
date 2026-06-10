@@ -14,7 +14,9 @@ export default function useSongDebounce(
 
   useEffect(() => {
     if (!query) {
-      return setSongs(filteredSongs(query, stage));
+      setSongs(filteredSongs(query, stage));
+      setLoading(false);
+      return;
     }
     setLoading(true);
 
