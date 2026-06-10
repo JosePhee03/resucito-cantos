@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useSharedValue } from "react-native-reanimated";
 
-import { colors, fonts, typography } from "@/themes";
+import { colors, fonts, spacing, typography } from "@/themes";
 import { isStage, Stage } from "@/domain/song";
 import useSongDebounce from "@/hooks/useSongDebounce";
 import { SearchBar, SearchFlatList, SearchTopBar } from "@/components/search";
@@ -83,7 +83,17 @@ export default function SearchScreen() {
           headerHidden={headerHidden}
           title={titleStage()}
           rightToobar={
-            <Pressable onPress={handleShowSearchBar}>
+            <Pressable
+              onPress={handleShowSearchBar}
+              style={({ pressed }) => [
+                {
+                  paddingHorizontal: spacing.sm,
+                  height: 32,
+                  justifyContent: "center",
+                },
+                pressed && { opacity: 0.2 },
+              ]}
+            >
               <Icon name="search" color={colors.primary} />
             </Pressable>
           }
