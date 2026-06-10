@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { Song } from "@/domain/song";
 import { useSongStore } from "@/store/song.store";
 
 export default function useSongDebounce(
@@ -8,28 +7,23 @@ export default function useSongDebounce(
   stage?: string,
   delay = 300,
 ) {
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [loading, setLoading] = useState(false);
   const { filteredSongs } = useSongStore.getState();
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
 
   useEffect(() => {
-    if (!query) {
-      setSongs(filteredSongs(query, stage));
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-
     const timeout = setTimeout(() => {
-      setLoading(false);
-      setSongs(filteredSongs(query, stage));
+      setDebouncedQuery(query);
     }, delay);
 
     return () => clearTimeout(timeout);
-  }, [query, stage, delay]);
+  }, [query, delay]);
+
+  const songs = useMemo(() => {
+    return filteredSongs(debouncedQuery, stage);
+  }, [debouncedQuery, stage]);
 
   return {
     songs,
-    loading,
+    loading: query !== debouncedQuery,
   };
 }
