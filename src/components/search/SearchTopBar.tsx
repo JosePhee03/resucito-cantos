@@ -1,28 +1,52 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
 
-import { colors, spacing } from "@/themes";
-import TopBar from "../TopBar";
+import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
+import Icon from "../Icon";
 
 type SearchTopBarProps = {
-  title: string;
-  children?: React.JSX.Element | React.JSX.Element[];
+  children: React.JSX.Element;
 };
 
-export default function SearchTopBar({ title, children }: SearchTopBarProps) {
+export default function SearchTopBar({ children }: SearchTopBarProps) {
   return (
-    <View style={styles.header}>
-      <TopBar title={title} />
-      <View style={styles.searchContainer}>{children}</View>
+    <View style={styles.topBar}>
+      <Pressable
+        onPress={router.back}
+        style={({ pressed }) => [
+          styles.buttonBack,
+          pressed && styles.buttonBackPressed,
+        ]}
+      >
+        <Icon size={24} name="chevron-left" color={colors.primary} />
+        <Text style={styles.textIcon}>Atrás</Text>
+      </Pressable>
+      <View style={styles.colRight}>{children}</View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: colors.background,
-    paddingBottom: spacing.sm,
+  topBar: {
+    height: CONSTANT.HEADER,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: spacing.sm,
+    gap: spacing.sm,
   },
-  searchContainer: {
-    paddingHorizontal: spacing.md,
+  textIcon: {
+    fontFamily: fonts.medium,
+    fontSize: typography.sm,
+    color: colors.primary,
+  },
+  colRight: {
+    flex: 1,
+  },
+  buttonBack: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonBackPressed: {
+    opacity: 0.2,
   },
 });
