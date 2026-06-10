@@ -1,40 +1,34 @@
-import { useEffect, useRef } from "react";
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { useRef } from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
-import { colors, fonts, radius, spacing, typography } from "@/themes";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
 import Icon from "../Icon";
 
 type SearchBarProps = {
   onChange: (query: string) => void;
   query: string;
-  onClear: () => void;
-  focus: boolean;
+  loading: boolean;
+  onCancel: () => void;
 };
 
 export default function SearchBar({
   onChange,
   query,
-  onClear,
-  focus,
+  loading,
+  onCancel,
 }: SearchBarProps) {
   const searchInputRef = useRef<TextInput>(null);
 
-  useEffect(() => {
-    if (focus) {
-      searchInputRef.current?.focus();
-    }
-  }, [focus]);
-
-  const handleOnSearch = () => {
-    const ref = searchInputRef.current;
-    if (ref?.isFocused) {
-      ref.blur();
-    }
-    ref?.focus();
-  };
-
   const handleOnClear = () => {
-    onClear();
+    searchInputRef.current?.clear();
+    onChange("");
   };
 
   const handleOnChange = (text: string) => {
@@ -42,35 +36,50 @@ export default function SearchBar({
   };
 
   return (
-    <View style={styles.searchInput}>
-      <Pressable
-        onPress={handleOnSearch}
-        style={({ pressed }) => [
-          styles.button,
-          pressed && styles.buttonPressed,
-        ]}
-      >
-        <Icon name="search" size={24} color={colors.foregroundSecondary} />
-      </Pressable>
-      <View style={styles.searchTextContainer}>
-        <TextInput
-          ref={searchInputRef}
-          onChangeText={handleOnChange}
-          value={query}
-          placeholder="Buscar"
-          placeholderTextColor={colors.foregroundSecondary}
-          style={styles.searchText}
-          returnKeyType="search"
-          accessible
-          accessibilityLabel="Campo de búsqueda"
-          accessibilityHint="Escribí para buscar cantos"
-          accessibilityRole="search"
-          autoCorrect={false}
-          autoCapitalize="none"
-          clearButtonMode="never"
-        />
+    <View style={styles.searchBar}>
+      <View style={styles.searchInput}>
+        <View style={styles.searchTextContainer}>
+          <TextInput
+            autoFocus
+            ref={searchInputRef}
+            onChangeText={handleOnChange}
+            value={query}
+            placeholder="Buscar"
+            placeholderTextColor={colors.foregroundSecondary}
+            style={styles.searchText}
+            returnKeyType="search"
+            accessible
+            accessibilityLabel="Campo de búsqueda"
+            accessibilityHint="Escribí para buscar cantos"
+            accessibilityRole="search"
+            autoCorrect={false}
+            autoCapitalize="none"
+            clearButtonMode="never"
+          />
+        </View>
+        <View
+          style={{
+            width: 24,
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {loading && <ActivityIndicator />}
+        </View>
+        {query !== "" && <ButtonClear onClear={handleOnClear} />}
       </View>
-      {query !== "" && <ButtonClear onClear={handleOnClear} />}
+      {query === "" && (
+        <Pressable
+          style={({ pressed }) => [
+            styles.buttonCancel,
+            pressed && styles.buttonCancelPressed,
+          ]}
+          onPress={onCancel}
+        >
+          <Text style={styles.buttonCancelText}>Cancelar</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -88,16 +97,21 @@ function ButtonClear({ onClear }: { onClear: () => void }) {
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: spacing.sm,
+    width: 32,
     height: "100%",
     justifyContent: "center",
+    alignItems: "center",
     borderRadius: radius.lg,
   },
-  searchInput: {
-    height: 36,
-    alignItems: "center",
+  searchBar: {
     flexDirection: "row",
-    borderRadius: radius.sm,
+    alignItems: "center",
+  },
+  searchInput: {
+    flex: 1,
+    height: CONSTANT.SEARCHBAR,
+    flexDirection: "row",
+    borderRadius: radius.lg,
     backgroundColor: colors.surfaceSecondary,
     overflow: "hidden",
   },
@@ -109,11 +123,23 @@ const styles = StyleSheet.create({
     position: "relative",
     justifyContent: "center",
   },
+  buttonCancel: {
+    padding: spacing.sm,
+  },
+  buttonCancelPressed: {
+    opacity: 0.2,
+  },
+  buttonCancelText: {
+    fontFamily: fonts.medium,
+    fontSize: typography.sm,
+    color: colors.primary,
+  },
   searchText: {
     width: "100%",
     position: "absolute",
     fontFamily: fonts.regular,
     fontSize: typography.md,
     color: colors.text,
+    paddingLeft: spacing.md,
   },
 });
