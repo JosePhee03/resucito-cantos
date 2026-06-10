@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
@@ -44,9 +44,9 @@ export default function SearchScreen() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  const handleOnChange = (text: string) => {
+  const handleOnChange = useCallback((text: string) => {
     setQuery(text);
-  };
+  }, []);
 
   const handleNavigationSong = useCallback((id: string) => {
     if (navigationLock.current) return;
@@ -54,18 +54,20 @@ export default function SearchScreen() {
     router.push(`/song/${id}`);
   }, []);
 
-  const handleShowSearchBar = () => {
+  const handleShowSearchBar = useCallback(() => {
     setShowSearchBar(true);
-  };
+  }, []);
 
-  const handleHiddenSearchBar = () => {
+  const handleHiddenSearchBar = useCallback(() => {
     setShowSearchBar(false);
-  };
+  }, []);
 
-  const titleStage = useCallback(() => {
+  const title = useMemo(() => {
     if (stage === undefined) return "Todos los cantos";
     if (isStage(stage)) return stageLang[stage];
-  }, []);
+
+    return "Todos los cantos";
+  }, [stage]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -81,7 +83,7 @@ export default function SearchScreen() {
       ) : (
         <TopBar
           headerHidden={headerHidden}
-          title={titleStage()}
+          title={title}
           rightToobar={
             <Pressable
               onPress={handleShowSearchBar}
@@ -99,8 +101,8 @@ export default function SearchScreen() {
           }
         />
       )}
-      <SearchFlatList
-        title={titleStage()}
+      <MemoSearchFlatList
+        title={title}
         showList={showList}
         headerHidden={headerHidden}
         songs={songs}
@@ -109,6 +111,8 @@ export default function SearchScreen() {
     </SafeAreaView>
   );
 }
+
+const MemoSearchFlatList = memo(SearchFlatList);
 
 const styles = StyleSheet.create({
   container: {
