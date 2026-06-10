@@ -9,7 +9,11 @@ type IconName =
   | "chevron-right"
   | "chevron-left"
   | "close"
-  | "music";
+  | "music"
+  | "options"
+  | "chevrons-up-down"
+  | "layout-list"
+  | "arrow-down-up";
 
 type IconProps = SvgProps & {
   name: IconName;
@@ -56,6 +60,14 @@ export default function Icon({
       return <CloseIcon {...svgIconProps} />;
     case "music":
       return <MusicIcon {...svgIconProps} />;
+    case "options":
+      return <OptionsIcon {...svgIconProps} />;
+    case "chevrons-up-down":
+      return <ChevronsUpDownIcon {...svgIconProps} />;
+    case "layout-list":
+      return <LayoutListIcon {...svgIconProps} />;
+    case "arrow-down-up":
+      return <ArrowDownUpIcon {...svgIconProps} />;
   }
 }
 
@@ -115,5 +127,33 @@ const MusicIcon = (props: SvgIconProps) => (
     <Path d="M9 18V5l12-2v13M9 9l12-2" />
     <Circle cx={6} cy={18} r={3} />
     <Circle cx={18} cy={16} r={3} />
+  </Svg>
+);
+
+const OptionsIcon = (props: SvgIconProps) => (
+  <Svg {...props}>
+    <Circle cx={12} cy={12} r={1} />
+    <Circle cx={19} cy={12} r={1} />
+    <Circle cx={5} cy={12} r={1} />
+  </Svg>
+);
+
+const ChevronsUpDownIcon = (props: SvgIconProps) => (
+  <Svg {...props}>
+    <Path d="m7 15 5 5 5-5M7 9l5-5 5 5" />
+  </Svg>
+);
+
+const LayoutListIcon = (props: SvgIconProps) => (
+  <Svg {...props}>
+    <Rect width={7} height={7} x={3} y={3} rx={1} />
+    <Rect width={7} height={7} x={3} y={14} rx={1} />
+    <Path d="M14 4h7M14 9h7M14 15h7M14 20h7" />
+  </Svg>
+);
+
+const ArrowDownUpIcon = (props: SvgIconProps) => (
+  <Svg {...props}>
+    <Path d="m3 16 4 4 4-4M7 20V4M21 8l-4-4-4 4M17 4v16" />
   </Svg>
 );
