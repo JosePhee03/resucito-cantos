@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   stageItemContent: {
     flex: 1,
-    paddingVertical: spacing.sm,
+    height: 44,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
