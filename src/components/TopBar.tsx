@@ -127,5 +127,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.semibold,
     fontSize: typography.sm,
     width: 180,
+    textAlign: "center",
   },
 });
