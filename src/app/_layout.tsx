@@ -32,7 +32,13 @@ export default function RootLayout() {
           headerShown: false,
           statusBarStyle: "dark",
         }}
-      />
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen
+          name="search-modal"
+          options={{ presentation: "modal", animation: "fade_from_bottom" }}
+        />
+      </Stack>
     </SafeAreaProvider>
   );
 }
