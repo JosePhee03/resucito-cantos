@@ -38,6 +38,15 @@ export default function SearchBar({
   return (
     <View style={styles.searchBar}>
       <View style={styles.searchInput}>
+        <View
+          style={{
+            paddingHorizontal: spacing.sm,
+            height: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <Icon name="search" color={colors.foregroundSecondary} />
+        </View>
         <View style={styles.searchTextContainer}>
           <TextInput
             autoFocus
@@ -69,17 +78,6 @@ export default function SearchBar({
         </View>
         {query !== "" && <ButtonClear onClear={handleOnClear} />}
       </View>
-      {query === "" && (
-        <Pressable
-          style={({ pressed }) => [
-            styles.buttonCancel,
-            pressed && styles.buttonCancelPressed,
-          ]}
-          onPress={onCancel}
-        >
-          <Text style={styles.buttonCancelText}>Cancelar</Text>
-        </Pressable>
-      )}
     </View>
   );
 }
@@ -140,6 +138,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: typography.md,
     color: colors.text,
-    paddingLeft: spacing.md,
   },
 });

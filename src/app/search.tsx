@@ -1,14 +1,14 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useSharedValue } from "react-native-reanimated";
 
-import { colors, fonts, spacing, typography } from "@/themes";
+import { colors, fonts, typography } from "@/themes";
 import { isStage, Stage } from "@/domain/song";
 import useSongDebounce from "@/hooks/useSongDebounce";
-import { SearchBar, SearchFlatList, SearchTopBar } from "@/components/search";
-import { Icon, TopBar } from "@/components";
+import { SearchFlatList } from "@/components/search";
+import { TopBar } from "@/components";
 
 type Params = {
   stage?: string;
@@ -27,8 +27,8 @@ export default function SearchScreen() {
   const navigationLock = useRef(false);
   const { songs, loading } = useSongDebounce(query, stage, 300);
   const headerHidden = useSharedValue(false);
-  const [showSearchBar, setShowSearchBar] = useState(false);
   const [showList, setShowList] = useState(false);
+  const [isPresented, setIsPresented] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -54,14 +54,6 @@ export default function SearchScreen() {
     router.push(`/song/${id}`);
   }, []);
 
-  const handleShowSearchBar = useCallback(() => {
-    setShowSearchBar(true);
-  }, []);
-
-  const handleHiddenSearchBar = useCallback(() => {
-    setShowSearchBar(false);
-  }, []);
-
   const title = useMemo(() => {
     if (stage === undefined) return "Todos los cantos";
     if (isStage(stage)) return stageLang[stage];
@@ -69,44 +61,22 @@ export default function SearchScreen() {
     return "Todos los cantos";
   }, [stage]);
 
+  const handleNavigationSearch = (stage?: Stage) => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    router.push({ pathname: "/search-modal" });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      {showSearchBar ? (
-        <SearchTopBar>
-          <SearchBar
-            onChange={handleOnChange}
-            query={query}
-            loading={loading}
-            onCancel={handleHiddenSearchBar}
-          />
-        </SearchTopBar>
-      ) : (
-        <TopBar
-          headerHidden={headerHidden}
-          title={title}
-          rightToobar={
-            <Pressable
-              onPress={handleShowSearchBar}
-              style={({ pressed }) => [
-                {
-                  paddingHorizontal: spacing.sm,
-                  height: 32,
-                  justifyContent: "center",
-                },
-                pressed && { opacity: 0.2 },
-              ]}
-            >
-              <Icon name="search" color={colors.primary} />
-            </Pressable>
-          }
-        />
-      )}
+      <TopBar headerHidden={headerHidden} title={title} />
       <MemoSearchFlatList
         title={title}
         showList={showList}
         headerHidden={headerHidden}
         songs={songs}
         onPressItem={handleNavigationSong}
+        navigationSearch={handleNavigationSearch}
       />
     </SafeAreaView>
   );
