@@ -1,11 +1,11 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect } from "expo-router";
 
-import { colors, fonts, radius, spacing, typography, CONSTANT } from "@/themes";
+import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { Stage } from "@/domain/song";
 import { SectionIndex } from "@/components/home";
-import { ButtonSearch, Icon } from "@/components";
+import { ButtonSearch } from "@/components";
 import { useRef } from "react";
 
 export default function HomeScreen() {

@@ -8,23 +8,24 @@ import Animated, {
 
 import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import Icon from "./Icon";
+import React from "react";
 
 type TopBarProps = {
   title?: string;
-  rightToobar?: React.JSX.Element | React.JSX.Element[];
+  children?: React.JSX.Element | React.JSX.Element[];
   headerHidden?: SharedValue<boolean>;
 };
 
 export default function TopBar({
   title = "",
-  rightToobar,
+  children,
   headerHidden,
 }: TopBarProps) {
   return (
     <View style={styles.topBar}>
       <ColLeft />
       <ColCenter title={title} headerHidden={headerHidden} />
-      <ColRight>{rightToobar}</ColRight>
+      <ColRight>{children}</ColRight>
     </View>
   );
 }
