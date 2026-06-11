@@ -10,6 +10,7 @@ import { Song } from "@/domain/song";
 import SearchEmplyList from "./SearchEmplyList";
 import SongItem from "./SongItem";
 import Icon from "../Icon";
+import ButtonSearch from "../ButtonSearch";
 
 type SongFlatListProps = {
   songs: Song[];
@@ -17,6 +18,7 @@ type SongFlatListProps = {
   onPressItem: (id: string) => void;
   headerHidden: SharedValue<boolean>;
   showList: boolean;
+  navigationSearch: () => void;
 };
 
 export default function SongFlatList({
@@ -25,9 +27,10 @@ export default function SongFlatList({
   onPressItem,
   headerHidden,
   showList,
+  navigationSearch,
 }: SongFlatListProps) {
   const onScroll = useAnimatedScrollHandler((event) => {
-    const isHidden = event.contentOffset.y > 52;
+    const isHidden = event.contentOffset.y > 44;
     headerHidden.value = isHidden;
   });
 
@@ -42,7 +45,6 @@ export default function SongFlatList({
           <View
             style={{
               paddingHorizontal: spacing.md,
-              paddingVertical: spacing.sm,
             }}
           >
             <Text
@@ -66,107 +68,11 @@ export default function SongFlatList({
           </View>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingHorizontal: spacing.sm,
+              paddingHorizontal: spacing.md,
+              paddingVertical: spacing.sm,
             }}
           >
-            <Pressable
-              style={({ pressed }) => [
-                {
-                  flexDirection: "row",
-                  paddingHorizontal: spacing.sm,
-                  gap: spacing.xs,
-                  alignItems: "center",
-                  height: 32,
-                  borderRadius: radius.lg,
-                },
-                pressed && { backgroundColor: colors.pressed },
-              ]}
-            >
-              <Text
-                style={{
-                  fontFamily: fonts.regular,
-                  fontSize: typography.sm,
-                  color: colors.foreground,
-                }}
-              >
-                Filtros
-              </Text>
-              <Icon
-                name="chevrons-up-down"
-                size={16}
-                color={colors.foreground}
-              />
-            </Pressable>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Pressable
-                style={({ pressed }) => [
-                  {
-                    flexDirection: "row",
-                    paddingHorizontal: spacing.sm,
-                    gap: spacing.xs,
-                    alignItems: "center",
-                    height: 32,
-                    borderStartStartRadius: radius.lg,
-                    borderBottomStartRadius: radius.lg,
-                  },
-                  pressed && { backgroundColor: colors.pressed },
-                ]}
-              >
-                <Text
-                  style={{
-                    fontFamily: fonts.regular,
-                    fontSize: typography.sm,
-                    color: colors.foreground,
-                  }}
-                >
-                  Vista
-                </Text>
-                <Icon name="layout-list" size={16} color={colors.foreground} />
-              </Pressable>
-              <View
-                style={{
-                  height: 20,
-                  width: 1,
-                  backgroundColor: colors.foreground,
-                }}
-              />
-              <Pressable
-                style={({ pressed }) => [
-                  {
-                    flexDirection: "row",
-                    paddingHorizontal: spacing.sm,
-                    gap: spacing.xs,
-                    alignItems: "center",
-                    height: 32,
-                    borderEndEndRadius: radius.lg,
-                    borderTopEndRadius: radius.lg,
-                  },
-                  pressed && { backgroundColor: colors.pressed },
-                ]}
-              >
-                <Text
-                  style={{
-                    fontFamily: fonts.regular,
-                    fontSize: typography.sm,
-                    color: colors.foreground,
-                  }}
-                >
-                  Ordenar
-                </Text>
-                <Icon
-                  name="arrow-down-up"
-                  size={16}
-                  color={colors.foreground}
-                />
-              </Pressable>
-            </View>
+            <ButtonSearch onPress={navigationSearch} />
           </View>
         </View>
       }
