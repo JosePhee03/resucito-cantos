@@ -12,26 +12,25 @@ export default function SongItem({ song, onPress }: SongItemProps) {
   return (
     <Pressable
       onPress={() => onPress(song.id)}
-      style={({ pressed }) => [pressed && styles.songItemPressed]}
+      style={({ pressed }) => [
+        styles.songItem,
+        pressed && styles.songItemPressed,
+      ]}
     >
-      <View style={styles.songItem}>
-        <View
-          style={{ ...styles.pageBadge, backgroundColor: colors[song.stage] }}
+      <View style={[styles.pageBadge, { backgroundColor: colors[song.stage] }]}>
+        <Text style={styles.pageText}>{song.page}</Text>
+      </View>
+      <View style={styles.songDeteails}>
+        <Text style={styles.titleText} numberOfLines={1} ellipsizeMode="tail">
+          {song.title.toUpperCase()}
+        </Text>
+        <Text
+          style={styles.subtitleText}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
-          <Text style={styles.pageText}>{song.page}</Text>
-        </View>
-        <View style={styles.songDeteails}>
-          <Text style={styles.titleText} numberOfLines={1} ellipsizeMode="tail">
-            {song.title.toUpperCase()}
-          </Text>
-          <Text
-            style={styles.subtitleText}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {song.subtitle}
-          </Text>
-        </View>
+          {song.subtitle}
+        </Text>
       </View>
     </Pressable>
   );
@@ -43,6 +42,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: spacing.md,
     gap: spacing.sm,
+    backgroundColor: colors.surface,
   },
   songItemPressed: {
     backgroundColor: colors.pressed,
