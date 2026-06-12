@@ -4,11 +4,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useSharedValue } from "react-native-reanimated";
 
-import { colors, fonts, typography } from "@/themes";
+import { colors, fonts, spacing, typography } from "@/themes";
 import { isStage, Stage } from "@/domain/song";
 import useSongDebounce from "@/hooks/useSongDebounce";
 import { SearchFlatList } from "@/components/search";
-import { TopBar } from "@/components";
+import { Icon, TopBar } from "@/components";
+import {
+  Popover,
+  PopoverContent,
+  PopoverItem,
+  PopoverTrigger,
+} from "@/components/popover";
 
 type Params = {
   stage?: string;
@@ -28,7 +34,6 @@ export default function SearchScreen() {
   const { songs, loading } = useSongDebounce(query, stage, 300);
   const headerHidden = useSharedValue(false);
   const [showList, setShowList] = useState(false);
-  const [isPresented, setIsPresented] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -69,7 +74,31 @@ export default function SearchScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TopBar headerHidden={headerHidden} title={title} />
+      <TopBar
+        headerHidden={headerHidden}
+        title={title}
+        children={
+          <Popover>
+            <PopoverTrigger
+              style={{
+                height: 32,
+                paddingHorizontal: spacing.sm,
+                justifyContent: "center",
+              }}
+            >
+              <Icon name="options" color={colors.primary} />
+            </PopoverTrigger>
+
+            <PopoverContent>
+              <PopoverItem label="Editar" onPress={() => {}} />
+
+              <PopoverItem label="Compartir" onPress={() => {}} />
+
+              <PopoverItem label="Eliminar" onPress={() => {}} />
+            </PopoverContent>
+          </Popover>
+        }
+      />
       <MemoSearchFlatList
         title={title}
         showList={showList}
