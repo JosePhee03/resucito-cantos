@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 
 import { useSongStore } from "@/store/song.store";
 import FONT_SOURCE from "@/themes/fonts";
+import { PortalProvider } from "@gorhom/portal";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,18 +28,20 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          statusBarStyle: "dark",
-        }}
-      >
-        <Stack.Screen name="index" />
-        <Stack.Screen
-          name="search-modal"
-          options={{ presentation: "modal", animation: "fade_from_bottom" }}
-        />
-      </Stack>
+      <PortalProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            statusBarStyle: "dark",
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen
+            name="search-modal"
+            options={{ presentation: "modal", animation: "fade_from_bottom" }}
+          />
+        </Stack>
+      </PortalProvider>
     </SafeAreaProvider>
   );
 }
