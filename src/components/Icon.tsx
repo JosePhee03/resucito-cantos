@@ -1,6 +1,6 @@
 import Svg, { SvgProps, Path, Circle, Rect } from "react-native-svg";
 
-type IconName =
+export type IconName =
   | "search"
   | "album"
   | "plus"
