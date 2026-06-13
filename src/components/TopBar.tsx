@@ -12,20 +12,20 @@ import React from "react";
 
 type TopBarProps = {
   title?: string;
-  children?: React.JSX.Element | React.JSX.Element[];
+  right?: React.JSX.Element | React.JSX.Element[];
   headerHidden?: SharedValue<boolean>;
 };
 
 export default function TopBar({
   title = "",
-  children,
+  right,
   headerHidden,
 }: TopBarProps) {
   return (
     <View style={styles.topBar}>
       <ColLeft />
       <ColCenter title={title} headerHidden={headerHidden} />
-      <ColRight>{children}</ColRight>
+      <ColRight>{right}</ColRight>
     </View>
   );
 }

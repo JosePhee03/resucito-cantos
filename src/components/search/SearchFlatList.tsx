@@ -41,7 +41,7 @@ export default function SongFlatList({
   return (
     <Animated.FlatList
       ListHeaderComponent={
-        <View style={{ backgroundColor: colors.background }}>
+        <View>
           <View
             style={{
               paddingHorizontal: spacing.md,
@@ -60,7 +60,7 @@ export default function SongFlatList({
               style={{
                 fontFamily: fonts.regular,
                 fontSize: typography.sm,
-                color: colors.textSecondary,
+                color: colors.textTertiary,
               }}
             >
               {`${songs.length} Cantos`}
@@ -103,7 +103,7 @@ const SongItemMemo = memo(
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.background,
   },
   listContent: {
     paddingBottom: "25%",
