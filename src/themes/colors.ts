@@ -13,7 +13,7 @@ export const colors = {
   text: palettes.neutral950,
   title: palettes.neutral800,
   textSecondary: palettes.neutral800,
-  textTertiary: palettes.neutral600,
+  textTertiary: palettes.neutral500,
 
   border: palettes.neutral200,
   pressed: "#00000020",
