@@ -1,42 +1,65 @@
 import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import { Pressable, StyleSheet, Text } from "react-native";
+import Icon from "./Icon";
 
 type ButtonProps = {
-  text: string;
-  size: "sm" | "md";
-  center?: boolean;
+  children: React.ReactNode;
   onPress: () => void;
-  px?: "sm" | "md";
 };
 
-export function ButtonText({
-  text,
-  size = "md",
-  center,
-  onPress,
-  px,
-}: ButtonProps) {
+type LabelProps = {
+  text: string;
+  size?: keyof typeof typography;
+  center?: boolean;
+  px?: keyof typeof spacing;
+};
+
+type ButtonTextProps = LabelProps & {
+  onPress: () => void;
+};
+
+export function Button({ children, onPress }: ButtonProps) {
   return (
     <Pressable
-      style={({ pressed }) => [
-        styles.button,
-        { paddingHorizontal: px && spacing[px] },
-        pressed && styles.buttonTextPressed,
-      ]}
       onPress={onPress}
+      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
     >
-      <Text
-        style={[
-          styles.buttonText,
-          {
-            fontSize: typography[size],
-            textAlign: center ? "center" : undefined,
-          },
-        ]}
-      >
-        {text}
-      </Text>
+      {children}
     </Pressable>
+  );
+}
+
+export function ButtonText({ onPress, ...props }: ButtonTextProps) {
+  return (
+    <Button onPress={onPress}>
+      <Label {...props} />
+    </Button>
+  );
+}
+
+export function ButtonBack({ onPress, ...props }: ButtonTextProps) {
+  return (
+    <Button onPress={onPress}>
+      <Icon size={24} name="chevron-left" color={colors.primary} />
+      <Label {...props} />
+    </Button>
+  );
+}
+
+function Label({ text, center, px, size = "sm" }: LabelProps) {
+  return (
+    <Text
+      style={[
+        styles.text,
+        {
+          fontSize: typography[size],
+          textAlign: center ? "center" : undefined,
+          paddingHorizontal: px && spacing[px],
+        },
+      ]}
+    >
+      {text}
+    </Text>
   );
 }
 
@@ -44,11 +67,13 @@ const styles = StyleSheet.create({
   button: {
     height: CONSTANT.BUTTON,
     justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
   },
-  buttonTextPressed: {
+  pressed: {
     opacity: 0.2,
   },
-  buttonText: {
+  text: {
     fontFamily: fonts.medium,
     color: colors.primary,
   },

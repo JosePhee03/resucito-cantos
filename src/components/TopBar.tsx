@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { router } from "expo-router";
 import Animated, {
   SharedValue,
@@ -7,44 +7,38 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
-import Icon from "./Icon";
 import React from "react";
+import { ButtonBack } from "./Button";
 
 type TopBarProps = {
   title?: string;
   right?: React.JSX.Element | React.JSX.Element[];
+  left?: React.ReactNode;
   headerHidden?: SharedValue<boolean>;
 };
 
 export default function TopBar({
   title = "",
   right,
+  left,
   headerHidden,
 }: TopBarProps) {
   return (
     <View style={styles.topBar}>
-      <ColLeft />
+      <ColLeft>{left}</ColLeft>
       <ColCenter title={title} headerHidden={headerHidden} />
       <ColRight>{right}</ColRight>
     </View>
   );
 }
 
-function ColLeft() {
+function ColLeft({ children }: { children?: React.ReactNode }) {
+  const handleBackNavigate = () => {
+    router.canGoBack() ? router.back() : router.navigate("/");
+  };
   return (
     <View style={styles.columnLeft}>
-      <Pressable
-        onPress={() =>
-          router.canGoBack() ? router.back() : router.navigate("/")
-        }
-        style={({ pressed }) => [
-          styles.buttonBack,
-          pressed && styles.buttonBackPressed,
-        ]}
-      >
-        <Icon size={24} name="chevron-left" color={colors.primary} />
-        <Text style={styles.textIcon}>Atrás</Text>
-      </Pressable>
+      {children || <ButtonBack onPress={handleBackNavigate} text="Atrás" />}
     </View>
   );
 }
@@ -94,24 +88,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: spacing.sm,
   },
-  textIcon: {
-    fontFamily: fonts.medium,
-    fontSize: typography.sm,
-    color: colors.primary,
-    textAlignVertical: "center",
-  },
   columnLeft: {
     justifyContent: "center",
     zIndex: 110,
-  },
-  buttonBack: {
-    flexDirection: "row",
-    alignItems: "center",
-    height: 32,
-    paddingRight: spacing.sm,
-  },
-  buttonBackPressed: {
-    opacity: 0.2,
   },
   columnRight: {
     flexDirection: "row",
