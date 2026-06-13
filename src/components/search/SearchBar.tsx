@@ -1,28 +1,19 @@
 import { useRef } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
-import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
+import { colors, CONSTANT, fonts, radius, typography } from "@/themes";
 import Icon from "../Icon";
 
 type SearchBarProps = {
   onChange: (query: string) => void;
   query: string;
-  loading: boolean;
-  onCancel: () => void;
+  onSubmit: () => void;
 };
 
 export default function SearchBar({
   onChange,
   query,
-  loading,
-  onCancel,
+  onSubmit,
 }: SearchBarProps) {
   const searchInputRef = useRef<TextInput>(null);
 
@@ -38,13 +29,7 @@ export default function SearchBar({
   return (
     <View style={styles.searchBar}>
       <View style={styles.searchInput}>
-        <View
-          style={{
-            paddingHorizontal: spacing.sm,
-            height: "100%",
-            justifyContent: "center",
-          }}
-        >
+        <View style={styles.button}>
           <Icon name="search" color={colors.foregroundSecondary} />
         </View>
         <View style={styles.searchTextContainer}>
@@ -52,6 +37,7 @@ export default function SearchBar({
             autoFocus
             ref={searchInputRef}
             onChangeText={handleOnChange}
+            onSubmitEditing={onSubmit}
             value={query}
             placeholder="Buscar"
             placeholderTextColor={colors.foregroundSecondary}
@@ -65,16 +51,6 @@ export default function SearchBar({
             autoCapitalize="none"
             clearButtonMode="never"
           />
-        </View>
-        <View
-          style={{
-            width: 24,
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {loading && <ActivityIndicator />}
         </View>
         {query !== "" && <ButtonClear onClear={handleOnClear} />}
       </View>
@@ -95,8 +71,8 @@ function ButtonClear({ onClear }: { onClear: () => void }) {
 
 const styles = StyleSheet.create({
   button: {
-    width: 32,
-    height: "100%",
+    height: CONSTANT.SEARCHBAR,
+    width: CONSTANT.SEARCHBAR,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: radius.lg,
@@ -112,6 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     backgroundColor: colors.surfaceSecondary,
     overflow: "hidden",
+    alignItems: "center",
   },
   buttonPressed: {
     backgroundColor: colors.pressed,
@@ -120,17 +97,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: "relative",
     justifyContent: "center",
-  },
-  buttonCancel: {
-    padding: spacing.sm,
-  },
-  buttonCancelPressed: {
-    opacity: 0.2,
-  },
-  buttonCancelText: {
-    fontFamily: fonts.medium,
-    fontSize: typography.sm,
-    color: colors.primary,
   },
   searchText: {
     width: "100%",
