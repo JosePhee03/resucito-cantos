@@ -77,7 +77,7 @@ export default function SearchScreen() {
       <TopBar
         headerHidden={headerHidden}
         title={title}
-        children={
+        right={
           <Popover>
             <PopoverTrigger
               style={{

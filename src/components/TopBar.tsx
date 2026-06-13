@@ -7,12 +7,11 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
-import React from "react";
 import { ButtonBack } from "./Button";
 
 type TopBarProps = {
   title?: string;
-  right?: React.JSX.Element | React.JSX.Element[];
+  right?: React.ReactNode;
   left?: React.ReactNode;
   headerHidden?: SharedValue<boolean>;
 };
@@ -72,11 +71,7 @@ function ColCenter({
   );
 }
 
-function ColRight({
-  children,
-}: {
-  children?: React.JSX.Element | React.JSX.Element[];
-}) {
+function ColRight({ children }: { children?: React.ReactNode }) {
   return <View style={styles.columnRight}>{children}</View>;
 }
 
