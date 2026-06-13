@@ -1,21 +1,37 @@
-import { SearchBar } from "@/components/search";
-import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { router } from "expo-router";
+
+import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import { ButtonText, TopBar } from "@/components";
+import { SearchBar } from "@/components/search";
 
 export default function SearchModalScreen() {
+  const [query, setQuery] = useState("");
+
+  const handleOnChangeQuery = (query: string) => {
+    setQuery(query);
+  };
+
+  const handleOnSubmit = () => {
+    router.replace(`/search?query=${query}`);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
         <TopBar
-          right={
-            <ButtonText text="Buscar" px="sm" size="sm" onPress={() => {}} />
-          }
+          left={<ButtonText text="Cancelar" px="sm" onPress={handleOnSubmit} />}
+          right={<ButtonText text="Buscar" px="sm" onPress={handleOnSubmit} />}
         />
         <View style={styles.searchContainer}>
-          <SearchBar onSubmit={() => {}} onChange={() => {}} query="" />
+          <SearchBar
+            query={query}
+            onSubmit={handleOnSubmit}
+            onChange={handleOnChangeQuery}
+          />
         </View>
         <View style={styles.content}>
           <View style={styles.sectionHeader}>
