@@ -1,23 +1,25 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useSharedValue } from "react-native-reanimated";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { StyleSheet } from "react-native";
 
-import { colors, fonts, spacing, typography } from "@/themes";
-import { isStage, Stage } from "@/domain/song";
 import useSongDebounce from "@/hooks/useSongDebounce";
-import { SearchFlatList } from "@/components/search";
-import { Icon, TopBar } from "@/components";
+import { colors, fonts, typography } from "@/themes";
+import { isStage, Stage } from "@/domain/song";
 import {
-  Popover,
-  PopoverContent,
-  PopoverItem,
-  PopoverTrigger,
-} from "@/components/popover";
+  SearchBottomSheet,
+  SearchBottomSheetModal,
+  ButtonIcon,
+  SearchBar,
+  TopBar,
+} from "@/components";
+import { SearchFlatList } from "@/components/search";
 
 type Params = {
   stage?: string;
+  q?: string;
 };
 
 const stageLang: Record<Stage, string> = {
@@ -28,12 +30,12 @@ const stageLang: Record<Stage, string> = {
 };
 
 export default function SearchScreen() {
-  const [query, setQuery] = useState("");
-  const { stage } = useLocalSearchParams<Params>();
+  const { stage, q: query } = useLocalSearchParams<Params>();
   const navigationLock = useRef(false);
-  const { songs, loading } = useSongDebounce(query, stage, 300);
+  const { songs, loading } = useSongDebounce(query ?? "", stage, 300);
   const headerHidden = useSharedValue(false);
   const [showList, setShowList] = useState(false);
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -49,10 +51,6 @@ export default function SearchScreen() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  const handleOnChange = useCallback((text: string) => {
-    setQuery(text);
-  }, []);
-
   const handleNavigationSong = useCallback((id: string) => {
     if (navigationLock.current) return;
     navigationLock.current = true;
@@ -62,51 +60,60 @@ export default function SearchScreen() {
   const title = useMemo(() => {
     if (stage === undefined) return "Todos los cantos";
     if (isStage(stage)) return stageLang[stage];
-
-    return "Todos los cantos";
   }, [stage]);
 
-  const handleNavigationSearch = (stage?: Stage) => {
-    if (navigationLock.current) return;
-    navigationLock.current = true;
-    router.push({ pathname: "/search-modal" });
+  const openSearch = useCallback(() => {
+    bottomSheetRef.current?.present();
+  }, []);
+
+  const closeSearch = () => {
+    bottomSheetRef.current?.close();
   };
+
+  const handleOnSubmit = (query: string) => {
+    router.setParams({ q: query });
+    closeSearch();
+  };
+
+  const handleResetQuery = useCallback(() => {
+    return router.setParams({ q: "" });
+  }, []);
+
+  const searchComponent = useMemo(
+    () => (
+      <SearchBar
+        query={query}
+        editable={false}
+        onPress={openSearch}
+        onClear={handleResetQuery}
+        loading={loading}
+      />
+    ),
+    [query, openSearch, handleResetQuery, loading],
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <TopBar
         headerHidden={headerHidden}
         title={title}
-        right={
-          <Popover>
-            <PopoverTrigger
-              style={{
-                height: 32,
-                paddingHorizontal: spacing.sm,
-                justifyContent: "center",
-              }}
-            >
-              <Icon name="options" color={colors.primary} />
-            </PopoverTrigger>
-
-            <PopoverContent>
-              <PopoverItem label="Editar" onPress={() => {}} />
-
-              <PopoverItem label="Compartir" onPress={() => {}} />
-
-              <PopoverItem label="Eliminar" onPress={() => {}} />
-            </PopoverContent>
-          </Popover>
-        }
+        right={<ButtonIcon icon="ellipsis" onPress={() => {}} />}
       />
       <MemoSearchFlatList
         title={title}
+        searchComponent={searchComponent}
         showList={showList}
         headerHidden={headerHidden}
         songs={songs}
         onPressItem={handleNavigationSong}
-        navigationSearch={handleNavigationSearch}
       />
+      <SearchBottomSheetModal bottomSheetRef={bottomSheetRef}>
+        <SearchBottomSheet
+          q={query}
+          onDismiss={closeSearch}
+          onSubmit={handleOnSubmit}
+        />
+      </SearchBottomSheetModal>
     </SafeAreaView>
   );
 }
@@ -116,7 +123,10 @@ const MemoSearchFlatList = memo(SearchFlatList);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+  },
+  contentContainer: {
+    flex: 1,
+    height: "100%",
   },
   title: {
     fontFamily: fonts.bold,
