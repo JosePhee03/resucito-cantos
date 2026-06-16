@@ -9,6 +9,7 @@ export const colors = {
   foregroundSecondary: palettes.neutral500,
 
   primary: palettes.rose600,
+  secondary: palettes.rose100,
 
   text: palettes.neutral950,
   title: palettes.neutral800,
@@ -22,4 +23,4 @@ export const colors = {
   catechumenate: palettes.sky200,
   liturgy: palettes.amber200,
   election: palettes.lime200,
-};
+} as const;

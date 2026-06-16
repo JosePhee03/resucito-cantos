@@ -79,4 +79,4 @@ export const palettes = {
   rose800: "rgb(165 0 54)",
   rose900: "rgb(139 8 54)",
   rose950: "rgb(77 2 24)",
-};
+} as const;
