@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { SplashScreen, Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 
 import { useSongStore } from "@/store/song.store";
 import FONT_SOURCE from "@/themes/fonts";
-import { PortalProvider } from "@gorhom/portal";
-import { KeyboardProvider } from "react-native-keyboard-controller";
+import { colors } from "@/themes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,23 +30,20 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <KeyboardProvider statusBarTranslucent={true}>
-      <SafeAreaProvider>
-        <PortalProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              statusBarStyle: "dark",
-            }}
-          >
-            <Stack.Screen name="index" />
-            <Stack.Screen
-              name="search-modal"
-              options={{ presentation: "modal", animation: "fade_from_bottom" }}
+    <SafeAreaProvider>
+      <KeyboardProvider navigationBarTranslucent statusBarTranslucent>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                statusBarStyle: "dark",
+                contentStyle: { backgroundColor: colors.background },
+              }}
             />
-          </Stack>
-        </PortalProvider>
-      </SafeAreaProvider>
-    </KeyboardProvider>
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </KeyboardProvider>
+    </SafeAreaProvider>
   );
 }
