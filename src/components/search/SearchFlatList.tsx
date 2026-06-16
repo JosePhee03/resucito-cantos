@@ -1,4 +1,4 @@
-import { memo, ReactNode } from "react";
+import { memo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Animated, {
   SharedValue,
@@ -9,6 +9,7 @@ import { Song } from "@/domain/song";
 import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import SearchEmptyList from "./SearchEmptyList";
 import SongItem from "./SongItem";
+import SearchBar from "../SearchBar";
 
 type SongFlatListProps = {
   songs: Song[];
@@ -16,7 +17,10 @@ type SongFlatListProps = {
   onPressItem: (id: string) => void;
   headerHidden: SharedValue<boolean>;
   showList: boolean;
-  searchComponent: ReactNode;
+  query?: string;
+  onPress: () => void;
+  onClear: () => void;
+  loading: boolean;
 };
 
 export default function SongFlatList({
@@ -25,7 +29,10 @@ export default function SongFlatList({
   onPressItem,
   headerHidden,
   showList,
-  searchComponent,
+  query,
+  onPress,
+  onClear,
+  loading,
 }: SongFlatListProps) {
   const onScroll = useAnimatedScrollHandler((event) => {
     const isHidden = event.contentOffset.y > CONSTANT.HEADER;
@@ -44,7 +51,15 @@ export default function SongFlatList({
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.subtitle}>{`${songs.length} Cantos`}</Text>
           </View>
-          <View style={styles.searchContainer}>{searchComponent}</View>
+          <View style={styles.searchContainer}>
+            <SearchBarMemo
+              query={query}
+              editable={false}
+              onPress={onPress}
+              onClear={onClear}
+              loading={loading}
+            />
+          </View>
         </>
       }
       onScroll={onScroll}
@@ -63,12 +78,8 @@ export default function SongFlatList({
     />
   );
 }
-
-const SongItemMemo = memo(
-  ({ song, onPress }: { song: Song; onPress: (id: string) => void }) => {
-    return <SongItem song={song} onPress={onPress} />;
-  },
-);
+const SearchBarMemo = memo(SearchBar);
+const SongItemMemo = memo(SongItem);
 
 const styles = StyleSheet.create({
   list: {

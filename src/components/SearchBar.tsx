@@ -65,7 +65,6 @@ export default function SearchBar({
           clearButtonMode="never"
         />
       </View>
-      {}
       {loading ? (
         <View style={styles.loading}>
           <ActivityIndicator />
