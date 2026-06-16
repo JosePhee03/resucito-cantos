@@ -10,7 +10,7 @@ export type IconName =
   | "chevron-left"
   | "close"
   | "music"
-  | "options"
+  | "ellipsis"
   | "chevrons-up-down"
   | "layout-list"
   | "arrow-down-up";
@@ -60,8 +60,8 @@ export default function Icon({
       return <CloseIcon {...svgIconProps} />;
     case "music":
       return <MusicIcon {...svgIconProps} />;
-    case "options":
-      return <OptionsIcon {...svgIconProps} />;
+    case "ellipsis":
+      return <EllipsisIcon {...svgIconProps} />;
     case "chevrons-up-down":
       return <ChevronsUpDownIcon {...svgIconProps} />;
     case "layout-list":
@@ -130,7 +130,7 @@ const MusicIcon = (props: SvgIconProps) => (
   </Svg>
 );
 
-const OptionsIcon = (props: SvgIconProps) => (
+const EllipsisIcon = (props: SvgIconProps) => (
   <Svg {...props}>
     <Circle cx={12} cy={12} r={1} />
     <Circle cx={19} cy={12} r={1} />
