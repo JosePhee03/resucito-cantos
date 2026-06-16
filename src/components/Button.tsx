@@ -1,10 +1,11 @@
-import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
-import { Pressable, StyleSheet, Text } from "react-native";
-import Icon from "./Icon";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
+import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
+import Icon, { IconName } from "./Icon";
 
-type ButtonProps = {
+type ButtonProps = PressableProps & {
   children: React.ReactNode;
   onPress: () => void;
+  height?: "auto";
 };
 
 type LabelProps = {
@@ -18,11 +19,31 @@ type ButtonTextProps = LabelProps & {
   onPress: () => void;
 };
 
-export function Button({ children, onPress }: ButtonProps) {
+type ButtonIconProps = {
+  onPress: () => void;
+  icon: IconName;
+  size?: "sm" | "md";
+  color?: keyof typeof colors;
+  px?: keyof typeof spacing;
+};
+
+export function Button({
+  children,
+  onPress,
+  height,
+  style,
+  ...props
+}: ButtonProps) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.button,
+        pressed && styles.pressed,
+        { height: height ?? CONSTANT.BUTTON },
+        { ...style },
+      ]}
+      {...props}
     >
       {children}
     </Pressable>
@@ -46,6 +67,31 @@ export function ButtonBack({ onPress, ...props }: ButtonTextProps) {
   );
 }
 
+export function ButtonIcon({
+  onPress,
+  icon,
+  size = "md",
+  color = "primary",
+  px = "sm",
+}: ButtonIconProps) {
+  const sizes = {
+    md: 24,
+    sm: 16,
+  };
+  return (
+    <Button
+      style={{
+        paddingHorizontal: px && spacing[px],
+      }}
+      hitSlop={32}
+      height="auto"
+      onPress={onPress}
+    >
+      <Icon name={icon} size={sizes[size]} color={colors[color]} />
+    </Button>
+  );
+}
+
 function Label({ text, center, px, size = "sm" }: LabelProps) {
   return (
     <Text
@@ -65,10 +111,10 @@ function Label({ text, center, px, size = "sm" }: LabelProps) {
 
 const styles = StyleSheet.create({
   button: {
-    height: CONSTANT.BUTTON,
     justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
+    borderRadius: radius.md,
   },
   pressed: {
     opacity: 0.2,
