@@ -8,13 +8,7 @@ import { StyleSheet } from "react-native";
 import useSongDebounce from "@/hooks/useSongDebounce";
 import { colors, fonts, typography } from "@/themes";
 import { isStage, Stage } from "@/domain/song";
-import {
-  SearchBottomSheet,
-  SearchBottomSheetModal,
-  ButtonIcon,
-  SearchBar,
-  TopBar,
-} from "@/components";
+import { ButtonIcon, TopBar } from "@/components";
 import { SearchFlatList } from "@/components/search";
 
 type Params = {
@@ -27,6 +21,10 @@ const stageLang: Record<Stage, string> = {
   liturgy: "Liturgia",
   catechumenate: "Catecumenado",
   election: "Elección",
+};
+
+const handleResetQuery = () => {
+  router.setParams({ q: "" });
 };
 
 export default function SearchScreen() {
@@ -62,35 +60,11 @@ export default function SearchScreen() {
     if (isStage(stage)) return stageLang[stage];
   }, [stage]);
 
-  const openSearch = useCallback(() => {
-    bottomSheetRef.current?.present();
-  }, []);
-
-  const closeSearch = () => {
-    bottomSheetRef.current?.close();
-  };
-
-  const handleOnSubmit = (query: string) => {
-    router.setParams({ q: query });
-    closeSearch();
-  };
-
-  const handleResetQuery = useCallback(() => {
-    return router.setParams({ q: "" });
-  }, []);
-
-  const searchComponent = useMemo(
-    () => (
-      <SearchBar
-        query={query}
-        editable={false}
-        onPress={openSearch}
-        onClear={handleResetQuery}
-        loading={loading}
-      />
-    ),
-    [query, openSearch, handleResetQuery, loading],
-  );
+  const handleNavigationSearchModal = useCallback(() => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    router.push({ pathname: "/search-modal", params: { q: query, stage } });
+  }, [query]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -101,19 +75,15 @@ export default function SearchScreen() {
       />
       <MemoSearchFlatList
         title={title}
-        searchComponent={searchComponent}
+        query={query}
+        onPress={handleNavigationSearchModal}
+        onClear={handleResetQuery}
+        loading={loading}
         showList={showList}
         headerHidden={headerHidden}
         songs={songs}
         onPressItem={handleNavigationSong}
       />
-      <SearchBottomSheetModal bottomSheetRef={bottomSheetRef}>
-        <SearchBottomSheet
-          q={query}
-          onDismiss={closeSearch}
-          onSubmit={handleOnSubmit}
-        />
-      </SearchBottomSheetModal>
     </SafeAreaView>
   );
 }

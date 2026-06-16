@@ -1,17 +1,12 @@
 import { useRef } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { router, useFocusEffect } from "expo-router";
 
 import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { Stage } from "@/domain/song";
 import { SectionIndex } from "@/components/home";
-import {
-  SearchBar,
-  SearchBottomSheet,
-  SearchBottomSheetModal,
-} from "@/components";
+import { SearchBar } from "@/components";
 
 export default function HomeScreen() {
   const navigationLock = useRef(false);
@@ -26,19 +21,10 @@ export default function HomeScreen() {
     router.push({ pathname: "/search", params: { stage } });
   };
 
-  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
-
-  const openSearch = () => {
-    bottomSheetRef.current?.present();
-  };
-
-  const closeSearch = () => {
-    bottomSheetRef.current?.close();
-  };
-
-  const handleOnSubmit = (query: string) => {
-    closeSearch();
-    router.push({ pathname: "/search", params: { q: query } });
+  const handleNavigationSearchModal = () => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    router.push("/search-modal");
   };
 
   return (
@@ -59,15 +45,12 @@ export default function HomeScreen() {
             paddingHorizontal: spacing.md,
           }}
         >
-          <SearchBar editable={false} onPress={openSearch} />
+          <SearchBar editable={false} onPress={handleNavigationSearchModal} />
         </View>
         <View style={styles.content}>
           <SectionIndex onPressItem={handleNavigationSearch} />
         </View>
       </ScrollView>
-      <SearchBottomSheetModal bottomSheetRef={bottomSheetRef}>
-        <SearchBottomSheet onDismiss={closeSearch} onSubmit={handleOnSubmit} />
-      </SearchBottomSheetModal>
     </SafeAreaView>
   );
 }
@@ -83,7 +66,6 @@ function Header() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   content: {
     gap: spacing.lg,
