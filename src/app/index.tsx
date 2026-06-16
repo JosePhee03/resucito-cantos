@@ -1,12 +1,17 @@
+import { useRef } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { router, useFocusEffect } from "expo-router";
 
 import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { Stage } from "@/domain/song";
 import { SectionIndex } from "@/components/home";
-import { ButtonSearch } from "@/components";
-import { useRef } from "react";
+import {
+  SearchBar,
+  SearchBottomSheet,
+  SearchBottomSheetModal,
+} from "@/components";
 
 export default function HomeScreen() {
   const navigationLock = useRef(false);
@@ -19,6 +24,21 @@ export default function HomeScreen() {
     if (navigationLock.current) return;
     navigationLock.current = true;
     router.push({ pathname: "/search", params: { stage } });
+  };
+
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
+
+  const openSearch = () => {
+    bottomSheetRef.current?.present();
+  };
+
+  const closeSearch = () => {
+    bottomSheetRef.current?.close();
+  };
+
+  const handleOnSubmit = (query: string) => {
+    closeSearch();
+    router.push({ pathname: "/search", params: { q: query } });
   };
 
   return (
@@ -39,12 +59,15 @@ export default function HomeScreen() {
             paddingHorizontal: spacing.md,
           }}
         >
-          <ButtonSearch onPress={handleNavigationSearch} />
+          <SearchBar editable={false} onPress={openSearch} />
         </View>
         <View style={styles.content}>
           <SectionIndex onPressItem={handleNavigationSearch} />
         </View>
       </ScrollView>
+      <SearchBottomSheetModal bottomSheetRef={bottomSheetRef}>
+        <SearchBottomSheet onDismiss={closeSearch} onSubmit={handleOnSubmit} />
+      </SearchBottomSheetModal>
     </SafeAreaView>
   );
 }
