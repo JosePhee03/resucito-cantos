@@ -1,5 +1,6 @@
-import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
 import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
+
 import Icon, { IconName } from "./Icon";
 
 type ButtonProps = PressableProps & {
