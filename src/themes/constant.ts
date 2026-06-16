@@ -2,4 +2,7 @@ export const CONSTANT = {
   HEADER: 44,
   SEARCHBAR: 36,
   BUTTON: 32,
+  SECTION_ROW: 44,
+  LIST_ROW: 68,
+  PAGE_BADGE: 44,
 };

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, fonts, radius, spacing, typography } from "@/themes";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
 import { Stage } from "@/domain/song";
 import { useSongStore } from "@/store/song.store";
 import Icon from "../Icon";
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   stageItemContent: {
     flex: 1,
-    height: 44,
+    height: CONSTANT.SECTION_ROW,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
@@ -101,8 +101,9 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   stageItemRight: {
+    alignItems: "center",
+    height: "100%",
     flexDirection: "row",
-    gap: spacing.xs,
   },
   stageItemTotalNumber: {
     fontFamily: fonts.regular,

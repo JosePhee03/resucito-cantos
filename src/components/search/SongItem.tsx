@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, fonts, radius, spacing, typography } from "@/themes";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
 import { Song } from "@/domain/song";
 
 type SongItemProps = {
@@ -50,13 +50,14 @@ const styles = StyleSheet.create({
   pageBadge: {
     justifyContent: "center",
     alignItems: "center",
-    width: 44,
-    height: 44,
+    width: CONSTANT.PAGE_BADGE,
+    height: CONSTANT.PAGE_BADGE,
     borderRadius: radius.sm,
   },
   songDeteails: {
     flex: 1,
-    paddingVertical: spacing.md,
+    height: CONSTANT.LIST_ROW,
+    justifyContent: "center",
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
