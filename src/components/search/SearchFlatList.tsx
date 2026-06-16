@@ -1,16 +1,14 @@
-import { memo } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { memo, ReactNode } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import Animated, {
   SharedValue,
   useAnimatedScrollHandler,
 } from "react-native-reanimated";
 
-import { colors, fonts, radius, spacing, typography } from "@/themes";
 import { Song } from "@/domain/song";
-import SearchEmplyList from "./SearchEmplyList";
+import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
+import SearchEmptyList from "./SearchEmptyList";
 import SongItem from "./SongItem";
-import Icon from "../Icon";
-import ButtonSearch from "../ButtonSearch";
 
 type SongFlatListProps = {
   songs: Song[];
@@ -18,7 +16,7 @@ type SongFlatListProps = {
   onPressItem: (id: string) => void;
   headerHidden: SharedValue<boolean>;
   showList: boolean;
-  navigationSearch: () => void;
+  searchComponent: ReactNode;
 };
 
 export default function SongFlatList({
@@ -27,10 +25,10 @@ export default function SongFlatList({
   onPressItem,
   headerHidden,
   showList,
-  navigationSearch,
+  searchComponent,
 }: SongFlatListProps) {
   const onScroll = useAnimatedScrollHandler((event) => {
-    const isHidden = event.contentOffset.y > 44;
+    const isHidden = event.contentOffset.y > CONSTANT.HEADER;
     headerHidden.value = isHidden;
   });
 
@@ -41,47 +39,19 @@ export default function SongFlatList({
   return (
     <Animated.FlatList
       ListHeaderComponent={
-        <View>
-          <View
-            style={{
-              paddingHorizontal: spacing.md,
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: fonts.bold,
-                fontSize: typography.lg,
-                color: colors.text,
-              }}
-            >
-              {title}
-            </Text>
-            <Text
-              style={{
-                fontFamily: fonts.regular,
-                fontSize: typography.sm,
-                color: colors.textTertiary,
-              }}
-            >
-              {`${songs.length} Cantos`}
-            </Text>
+        <>
+          <View style={styles.headerList}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.subtitle}>{`${songs.length} Cantos`}</Text>
           </View>
-          <View
-            style={{
-              paddingHorizontal: spacing.md,
-              paddingVertical: spacing.sm,
-            }}
-          >
-            <ButtonSearch onPress={navigationSearch} />
-          </View>
-        </View>
+          <View style={styles.searchContainer}>{searchComponent}</View>
+        </>
       }
       onScroll={onScroll}
       style={styles.list}
       contentContainerStyle={styles.listContent}
-      keyboardShouldPersistTaps="handled"
       data={songs}
-      ListEmptyComponent={<SearchEmplyList />}
+      ListEmptyComponent={<SearchEmptyList />}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <SongItemMemo song={item} onPress={onPressItem} />
@@ -103,13 +73,25 @@ const SongItemMemo = memo(
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   listContent: {
-    paddingBottom: "25%",
+    flexGrow: 1,
   },
-  spacer: {
-    width: "100%",
-    height: 36,
+  headerList: {
+    paddingHorizontal: spacing.md,
+  },
+  title: {
+    fontFamily: fonts.bold,
+    fontSize: typography.lg,
+    color: colors.text,
+  },
+  subtitle: {
+    fontFamily: fonts.regular,
+    fontSize: typography.sm,
+    color: colors.textTertiary,
+  },
+  searchContainer: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
 });

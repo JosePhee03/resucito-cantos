@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   sectionHearder: {
-    paddingHorizontal: 0,
+    paddingHorizontal: spacing.sm,
   },
   sectionHearderTitle: {
     fontFamily: fonts.medium,
