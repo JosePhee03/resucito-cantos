@@ -1,11 +1,16 @@
 import { StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { colors, fonts, spacing, typography } from "@/themes";
+import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import Icon from "../Icon";
 
-export default function SearchEmplyList() {
+export default function SearchEmptyList() {
+  const { top } = useSafeAreaInsets();
+
   return (
-    <View style={styles.emplyList}>
+    <View
+      style={[styles.emptyList, { paddingBottom: CONSTANT.HEADER * 3 + top }]}
+    >
       <View style={styles.content}>
         <Icon name="music" size={64} color={colors.foregroundSecondary} />
         <Text style={styles.contentText}>Canto/s no encontrado/s</Text>
@@ -15,10 +20,9 @@ export default function SearchEmplyList() {
 }
 
 const styles = StyleSheet.create({
-  emplyList: {
-    flex: 1,
-    alignItems: "center",
-    paddingTop: 64,
+  emptyList: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
   content: {
     alignItems: "center",
