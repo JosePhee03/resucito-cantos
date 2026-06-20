@@ -11,13 +11,13 @@ export const colors = {
   primary: palettes.rose600,
   secondary: palettes.rose100,
 
-  text: palettes.neutral950,
+  text: palettes.neutral900,
   title: palettes.neutral800,
   textSecondary: palettes.neutral800,
   textTertiary: palettes.neutral500,
 
   border: palettes.neutral200,
-  pressed: "#00000020",
+  pressed: "rgba(31, 31, 31, .04)",
 
   precatechumenate: palettes.gray200,
   catechumenate: palettes.sky200,
