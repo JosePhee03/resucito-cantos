@@ -1,14 +1,16 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Edges, SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect } from "expo-router";
 
 import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { Stage } from "@/domain/song";
 import { SectionIndex } from "@/components/home";
 import { SearchBar } from "@/components";
+import { useOrientation } from "@/hooks/useOrientation";
 
 export default function HomeScreen() {
+  const isLandscape = useOrientation();
   const navigationLock = useRef(false);
 
   useFocusEffect(() => {
@@ -27,10 +29,14 @@ export default function HomeScreen() {
     router.push("/search-modal");
   };
 
+  const edges = useMemo<Edges>(() => {
+    return isLandscape ? ["bottom", "right", "top"] : ["left", "right", "top"];
+  }, [isLandscape]);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={edges} style={styles.container}>
       <Header />
-      <ScrollView stickyHeaderIndices={[1]}>
+      <ScrollView>
         <View
           style={{
             paddingHorizontal: spacing.md,

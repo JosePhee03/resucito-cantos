@@ -67,7 +67,7 @@ export default function SearchScreen() {
   }, [query]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["left", "right", "top"]} style={styles.container}>
       <TopBar
         headerHidden={headerHidden}
         title={title}
