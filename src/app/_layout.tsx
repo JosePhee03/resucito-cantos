@@ -37,11 +37,10 @@ export default function RootLayout() {
             <Stack
               screenOptions={{
                 headerShown: false,
-                statusBarStyle: "dark",
                 contentStyle: { backgroundColor: colors.background },
               }}
             >
-              <Stack.Screen name="index" />
+              <Stack.Screen name="(tabs)" />
               <Stack.Screen
                 name="search-modal"
                 options={{
