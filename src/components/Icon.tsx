@@ -13,7 +13,8 @@ export type IconName =
   | "ellipsis"
   | "chevrons-up-down"
   | "layout-list"
-  | "arrow-down-up";
+  | "arrow-down-up"
+  | "home";
 
 type IconProps = SvgProps & {
   name: IconName;
@@ -68,6 +69,8 @@ export default function Icon({
       return <LayoutListIcon {...svgIconProps} />;
     case "arrow-down-up":
       return <ArrowDownUpIcon {...svgIconProps} />;
+    case "home":
+      return <HomeIcon {...svgIconProps} />;
   }
 }
 
@@ -155,5 +158,12 @@ const LayoutListIcon = (props: SvgIconProps) => (
 const ArrowDownUpIcon = (props: SvgIconProps) => (
   <Svg {...props}>
     <Path d="m3 16 4 4 4-4M7 20V4M21 8l-4-4-4 4M17 4v16" />
+  </Svg>
+);
+
+const HomeIcon = (props: SvgIconProps) => (
+  <Svg {...props}>
+    <Path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+    <Path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
   </Svg>
 );
