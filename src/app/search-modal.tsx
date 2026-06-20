@@ -30,7 +30,10 @@ export default function searchModalScreen() {
   }, []);
 
   const handleOnSubmit = () => {
-    router.replace({ pathname: "/search", params: { q: query, stage } });
+    router.replace({
+      pathname: "/search",
+      params: { q: query, stage },
+    });
   };
 
   const handleOnChangeQuery = (query: string) => {
