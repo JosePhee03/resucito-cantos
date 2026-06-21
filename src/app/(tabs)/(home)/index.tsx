@@ -3,11 +3,10 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Edges, SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect } from "expo-router";
 
-import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { Stage } from "@/domain/song";
-import { SectionIndex } from "@/components/home";
-import { SearchBar } from "@/components";
+import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { useOrientation } from "@/hooks/useOrientation";
+import { SectionIndex } from "@/components/home";
 
 export default function HomeScreen() {
   const isLandscape = useOrientation();
@@ -20,13 +19,7 @@ export default function HomeScreen() {
   const handleNavigationSearch = (stage?: Stage) => {
     if (navigationLock.current) return;
     navigationLock.current = true;
-    router.push({ pathname: "/search", params: { stage } });
-  };
-
-  const handleNavigationSearchModal = () => {
-    if (navigationLock.current) return;
-    navigationLock.current = true;
-    router.push("/search-modal");
+    router.push(`/songs/${stage}`);
   };
 
   const edges = useMemo<Edges>(() => {
@@ -37,25 +30,10 @@ export default function HomeScreen() {
     <SafeAreaView edges={edges} style={styles.container}>
       <Header />
       <ScrollView>
-        <View
-          style={{
-            paddingHorizontal: spacing.md,
-            paddingTop: spacing.sm,
-          }}
-        >
+        <View style={styles.headerContent}>
           <Text style={styles.contentTitle}>Índice</Text>
         </View>
-        <View
-          style={{
-            paddingVertical: spacing.sm,
-            paddingHorizontal: spacing.md,
-          }}
-        >
-          <SearchBar editable={false} onPress={handleNavigationSearchModal} />
-        </View>
-        <View style={styles.content}>
-          <SectionIndex onPressItem={handleNavigationSearch} />
-        </View>
+        <SectionIndex onPressItem={handleNavigationSearch} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -70,18 +48,18 @@ function Header() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    gap: spacing.lg,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-  },
+  container: {},
+  section: {},
   header: {
     height: CONSTANT.HEADER,
     paddingHorizontal: spacing.md,
     justifyContent: "center",
+  },
+  headerContent: {
+    paddingHorizontal: spacing.md,
+    height: CONSTANT.HEADER + spacing.sm,
+    paddingBottom: spacing.sm,
+    justifyContent: "flex-end",
   },
   contentTitle: {
     fontFamily: fonts.bold,
