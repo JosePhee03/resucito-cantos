@@ -2,18 +2,16 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useSharedValue } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { StyleSheet } from "react-native";
 
-import useSongDebounce from "@/hooks/useSongDebounce";
 import { colors, fonts, typography } from "@/themes";
 import { isStage, Stage } from "@/domain/song";
+import { useSongStore } from "@/store/song.store";
 import { ButtonIcon, TopBar } from "@/components";
 import { SearchFlatList } from "@/components/search";
 
 type Params = {
-  stage?: string;
-  q?: string;
+  slug: string;
 };
 
 const stageLang: Record<Stage, string> = {
@@ -23,17 +21,22 @@ const stageLang: Record<Stage, string> = {
   election: "Elección",
 };
 
-const handleResetQuery = () => {
-  router.setParams({ q: "" });
-};
-
-export default function SearchScreen() {
-  const { stage, q: query } = useLocalSearchParams<Params>();
+export default function SongListScreen() {
+  const { slug } = useLocalSearchParams<Params>();
   const navigationLock = useRef(false);
-  const { songs, loading } = useSongDebounce(query ?? "", stage, 300);
   const headerHidden = useSharedValue(false);
   const [showList, setShowList] = useState(false);
-  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
+  const { songsByStage, songs: TotalSongs } = useSongStore.getState();
+
+  const songs = useMemo(() => {
+    if (isStage(slug)) return songsByStage[slug];
+    return TotalSongs;
+  }, []);
+
+  const title = useMemo(() => {
+    if (slug === undefined) return "Todos los cantos";
+    if (isStage(slug)) return stageLang[slug];
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -55,17 +58,6 @@ export default function SearchScreen() {
     router.push(`/song/${id}`);
   }, []);
 
-  const title = useMemo(() => {
-    if (stage === undefined) return "Todos los cantos";
-    if (isStage(stage)) return stageLang[stage];
-  }, [stage]);
-
-  const handleNavigationSearchModal = useCallback(() => {
-    if (navigationLock.current) return;
-    navigationLock.current = true;
-    router.push({ pathname: "/search-modal", params: { q: query, stage } });
-  }, [query]);
-
   return (
     <SafeAreaView edges={["left", "right", "top"]} style={styles.container}>
       <TopBar
@@ -75,10 +67,6 @@ export default function SearchScreen() {
       />
       <MemoSearchFlatList
         title={title}
-        query={query}
-        onPress={handleNavigationSearchModal}
-        onClear={handleResetQuery}
-        loading={loading}
         showList={showList}
         headerHidden={headerHidden}
         songs={songs}
@@ -93,6 +81,7 @@ const MemoSearchFlatList = memo(SearchFlatList);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.backgroundSecondary,
   },
   contentContainer: {
     flex: 1,
