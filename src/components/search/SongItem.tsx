@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: spacing.md,
     gap: spacing.sm,
-    backgroundColor: colors.surface,
   },
   songItemPressed: {
     backgroundColor: colors.pressed,
@@ -58,8 +57,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: CONSTANT.LIST_ROW,
     justifyContent: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
   },
   pageText: {
     fontFamily: fonts.bold,

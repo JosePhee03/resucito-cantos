@@ -34,13 +34,7 @@ export default function SearchBar({
   const handleOnPress = useCallback(() => !loading && onPress?.(), [loading]);
 
   return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.searchBar,
-        pressed && styles.buttonPressed,
-      ]}
-      onPress={handleOnPress}
-    >
+    <View style={styles.searchBar}>
       <View style={styles.button}>
         <Icon name="search" color={colors.foregroundSecondary} />
       </View>
@@ -72,7 +66,7 @@ export default function SearchBar({
       ) : (
         query !== "" && <ButtonClear onClear={onClear} />
       )}
-    </Pressable>
+    </View>
   );
 }
 
@@ -102,11 +96,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
   },
   searchBar: {
-    flex: 1,
     height: CONSTANT.SEARCHBAR,
     flexDirection: "row",
     alignItems: "center",
     borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
     backgroundColor: colors.surfaceSecondary,
     overflow: "hidden",
   },

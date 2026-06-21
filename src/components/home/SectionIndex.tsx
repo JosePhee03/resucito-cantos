@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { colors, fonts, spacing, typography } from "@/themes";
-import StageList from "./StageList";
+import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import { Stage } from "@/domain/song";
+import StageList from "./StageList";
 
 type SectionIndexProps = {
   onPressItem: (stage?: Stage) => void;
@@ -10,7 +10,7 @@ type SectionIndexProps = {
 
 export default function SectionIndex({ onPressItem }: SectionIndexProps) {
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.sectionHearder}>
         <Text style={styles.sectionHearderTitle}>Pasos del camino</Text>
       </View>
@@ -20,15 +20,14 @@ export default function SectionIndex({ onPressItem }: SectionIndexProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    gap: spacing.sm,
-  },
   sectionHearder: {
-    paddingHorizontal: spacing.sm,
+    height: CONSTANT.SECTION_HEADER,
+    justifyContent: "center",
+    paddingHorizontal: spacing.md,
   },
   sectionHearderTitle: {
     fontFamily: fonts.medium,
-    fontSize: typography.sm,
+    fontSize: typography.md,
     color: colors.textTertiary,
   },
 });

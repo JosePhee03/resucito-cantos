@@ -9,7 +9,6 @@ import { Song } from "@/domain/song";
 import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import SearchEmptyList from "./SearchEmptyList";
 import SongItem from "./SongItem";
-import SearchBar from "../SearchBar";
 
 type SongFlatListProps = {
   songs: Song[];
@@ -17,10 +16,6 @@ type SongFlatListProps = {
   onPressItem: (id: string) => void;
   headerHidden: SharedValue<boolean>;
   showList: boolean;
-  query?: string;
-  onPress: () => void;
-  onClear: () => void;
-  loading: boolean;
 };
 
 export default function SongFlatList({
@@ -29,10 +24,6 @@ export default function SongFlatList({
   onPressItem,
   headerHidden,
   showList,
-  query,
-  onPress,
-  onClear,
-  loading,
 }: SongFlatListProps) {
   const onScroll = useAnimatedScrollHandler((event) => {
     const isHidden = event.contentOffset.y > CONSTANT.HEADER;
@@ -46,30 +37,28 @@ export default function SongFlatList({
   return (
     <Animated.FlatList
       ListHeaderComponent={
-        <>
-          <View style={styles.headerList}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.subtitle}>{`${songs.length} Cantos`}</Text>
-          </View>
-          <View style={styles.searchContainer}>
-            <SearchBarMemo
-              query={query}
-              editable={false}
-              onPress={onPress}
-              onClear={onClear}
-              loading={loading}
-            />
-          </View>
-        </>
+        <View style={styles.headerList}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{`${songs.length} Cantos`}</Text>
+        </View>
       }
       onScroll={onScroll}
-      style={styles.list}
       contentContainerStyle={styles.listContent}
       data={songs}
       ListEmptyComponent={<SearchEmptyList />}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
+      renderItem={({ item, separators }) => (
         <SongItemMemo song={item} onPress={onPressItem} />
+      )}
+      ItemSeparatorComponent={() => (
+        <View
+          style={{
+            height: 1,
+            backgroundColor: colors.border,
+            marginRight: spacing.md,
+            marginLeft: spacing.lg + CONSTANT.PAGE_BADGE,
+          }}
+        />
       )}
       removeClippedSubviews
       initialNumToRender={10}
@@ -78,18 +67,19 @@ export default function SongFlatList({
     />
   );
 }
-const SearchBarMemo = memo(SearchBar);
 const SongItemMemo = memo(SongItem);
 
 const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-  },
   listContent: {
     flexGrow: 1,
+    backgroundColor: colors.background,
   },
   headerList: {
+    backgroundColor: colors.backgroundSecondary,
     paddingHorizontal: spacing.md,
+    paddingBottom: spacing.sm,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
   },
   title: {
     fontFamily: fonts.bold,
@@ -100,9 +90,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: typography.sm,
     color: colors.textTertiary,
-  },
-  searchContainer: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
   },
 });
