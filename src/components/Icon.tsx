@@ -14,7 +14,8 @@ export type IconName =
   | "chevrons-up-down"
   | "layout-list"
   | "arrow-down-up"
-  | "home";
+  | "home"
+  | "guitar";
 
 type IconProps = SvgProps & {
   name: IconName;
@@ -71,6 +72,8 @@ export default function Icon({
       return <ArrowDownUpIcon {...svgIconProps} />;
     case "home":
       return <HomeIcon {...svgIconProps} />;
+    case "guitar":
+      return <GuitarIcon {...svgIconProps} />;
   }
 }
 
@@ -165,5 +168,11 @@ const HomeIcon = (props: SvgIconProps) => (
   <Svg {...props}>
     <Path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
     <Path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+  </Svg>
+);
+
+const GuitarIcon = (props: SvgIconProps) => (
+  <Svg {...props}>
+    <Path d="m11.9 12.1 4.514-4.514M20.1 2.3a1 1 0 0 0-1.4 0l-1.114 1.114A2 2 0 0 0 17 4.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 17.828 7h1.344a2 2 0 0 0 1.414-.586L21.7 5.3a1 1 0 0 0 0-1.4zM6 16l2 2M8.23 9.85A3 3 0 0 1 11 8a5 5 0 0 1 5 5 3 3 0 0 1-1.85 2.77l-.92.38A2 2 0 0 0 12 18a4 4 0 0 1-4 4 6 6 0 0 1-6-6 4 4 0 0 1 4-4 2 2 0 0 0 1.85-1.23z" />
   </Svg>
 );
