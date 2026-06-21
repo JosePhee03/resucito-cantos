@@ -17,8 +17,8 @@ export default function TabsLayout() {
         tabBarShowLabel: !isLandscape,
         tabBarStyle: {
           minWidth: 64,
-          backgroundColor: colors.background,
-          borderColor: colors.background,
+          backgroundColor: colors.backgroundSecondary,
+          borderColor: colors.border,
         },
         tabBarLabelStyle: {
           fontFamily: fonts.medium,
@@ -27,7 +27,7 @@ export default function TabsLayout() {
         tabBarButton: TabBarButton,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.foregroundSecondary,
-        tabBarActiveBackgroundColor: colors.background,
+        tabBarActiveBackgroundColor: colors.backgroundSecondary,
       }}
     >
       <Tabs.Screen
@@ -38,9 +38,18 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="search"
+        options={{
+          title: "Buscar",
+          sceneStyle: { backgroundColor: colors.background },
+          tabBarIcon: ({ color }) => <Icon name="search" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="settings"
         options={{
           title: "Preferencias",
+          sceneStyle: { backgroundColor: colors.background },
           tabBarIcon: ({ color }) => <Icon name="settings" color={color} />,
         }}
       />
