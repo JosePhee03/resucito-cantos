@@ -1,22 +1,25 @@
 import { palettes } from "./palettes";
 
 export const colors = {
-  background: palettes.neutral100,
-  surface: palettes.white,
-  foreground: palettes.neutral800,
+  background: palettes.white,
+  backgroundSecondary: palettes.zinc50,
+  surface: palettes.neutral50,
+  foreground: palettes.zinc800,
 
-  surfaceSecondary: palettes.neutral200,
-  foregroundSecondary: palettes.neutral500,
+  surfaceSecondary: palettes.zinc50,
+  foregroundSecondary: palettes.zinc500,
+
+  surfaceTertiary: palettes.zinc50,
 
   primary: palettes.rose600,
   secondary: palettes.rose100,
 
-  text: palettes.neutral900,
-  title: palettes.neutral800,
-  textSecondary: palettes.neutral800,
-  textTertiary: palettes.neutral500,
+  text: palettes.zinc900,
+  title: palettes.zinc800,
+  textSecondary: palettes.zinc800,
+  textTertiary: palettes.zinc500,
 
-  border: palettes.neutral200,
+  border: palettes.zinc200,
   pressed: "rgba(31, 31, 31, .04)",
 
   precatechumenate: palettes.gray200,
