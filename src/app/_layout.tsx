@@ -8,7 +8,7 @@ import { useFonts } from "expo-font";
 
 import { useSongStore } from "@/store/song.store";
 import FONT_SOURCE from "@/themes/fonts";
-import { colors, radius } from "@/themes";
+import { colors } from "@/themes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,13 +41,6 @@ export default function RootLayout() {
               }}
             >
               <Stack.Screen name="(tabs)" />
-              <Stack.Screen
-                name="search-modal"
-                options={{
-                  presentation: "formSheet",
-                  sheetCornerRadius: radius.lg,
-                }}
-              />
             </Stack>
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
