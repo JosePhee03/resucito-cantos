@@ -2,13 +2,13 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
 import { Song } from "@/domain/song";
+import { memo } from "react";
 
 type SongItemProps = {
   song: Song;
   onPress: (id: string) => void;
 };
-
-export default function SongItem({ song, onPress }: SongItemProps) {
+function SongItem({ song, onPress }: SongItemProps) {
   return (
     <Pressable
       onPress={() => onPress(song.id)}
@@ -35,6 +35,8 @@ export default function SongItem({ song, onPress }: SongItemProps) {
     </Pressable>
   );
 }
+
+export const SongItemMemo = memo(SongItem);
 
 const styles = StyleSheet.create({
   songItem: {

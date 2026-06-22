@@ -8,7 +8,7 @@ import Animated, {
 import { Song } from "@/domain/song";
 import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
 import SearchEmptyList from "./SongEmptyList";
-import SongItem from "./SongItem";
+import { SongItemMemo } from "./SongItem";
 
 type SongFlatListProps = {
   songs: Song[];
@@ -33,14 +33,6 @@ export default function SongSectionList({
     const isHidden = event.contentOffset.y > CONSTANT.HEADER;
     headerHidden.value = isHidden;
   });
-
-  const scrollToLetter = (index: number) => {
-    sectionListRef.current?.scrollToLocation({
-      sectionIndex: index,
-      itemIndex: 0,
-      animated: true,
-    });
-  };
 
   if (!showList) {
     return null;
@@ -109,8 +101,6 @@ const sections = (songs: Song[]) =>
       {} as Record<string, { title: string; data: typeof songs }>,
     ),
   ).sort((a, b) => a.title.localeCompare(b.title));
-
-const SongItemMemo = memo(SongItem);
 
 const styles = StyleSheet.create({
   listContent: {
