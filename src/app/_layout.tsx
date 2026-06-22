@@ -40,7 +40,7 @@ export default function RootLayout() {
                 contentStyle: { backgroundColor: colors.background },
               }}
             >
-              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="(home)" />
             </Stack>
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
