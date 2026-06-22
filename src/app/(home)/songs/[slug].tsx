@@ -1,10 +1,10 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useSharedValue } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import { colors, fonts, typography } from "@/themes";
+import { colors, fonts, spacing, typography } from "@/themes";
 import { isStage, Stage } from "@/domain/song";
 import { useSongStore } from "@/store/song.store";
 import { ButtonIcon, TopBar } from "@/components";
@@ -58,12 +58,34 @@ export default function SongListScreen() {
     router.push(`/song/${id}`);
   }, []);
 
+  const handleNavigationSearch = useCallback(() => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    let stage: Stage | undefined;
+    if (slug && isStage(slug)) stage = slug;
+    router.push({
+      pathname: "/search",
+      params: { stage },
+    });
+  }, []);
+
+  const handleNavigationSettings = useCallback(() => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    router.push("/settings");
+  }, []);
+
   return (
     <SafeAreaView edges={["left", "right", "top"]} style={styles.container}>
       <TopBar
         headerHidden={headerHidden}
         title={title}
-        right={<ButtonIcon icon="ellipsis" onPress={() => {}} />}
+        right={
+          <View style={{ flexDirection: "row", gap: spacing.sm }}>
+            <ButtonIcon icon="search" onPress={handleNavigationSearch} />
+            <ButtonIcon icon="ellipsis" onPress={handleNavigationSettings} />
+          </View>
+        }
       />
       <SongSectionList
         title={title}
