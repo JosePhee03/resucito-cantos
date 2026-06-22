@@ -2,9 +2,9 @@ export const CONSTANT = {
   HEADER: 44,
   LARGE_HEADER: 96,
   SECTION_HEADER: 32,
-  SEARCHBAR: 44,
+  SEARCHBAR: 32,
   BUTTON: 32,
   SECTION_ROW: 44,
   LIST_ROW: 68,
   PAGE_BADGE: 44,
-};
+} as const;
