@@ -8,10 +8,10 @@ import { colors, fonts, typography } from "@/themes";
 import { isStage, Stage } from "@/domain/song";
 import { useSongStore } from "@/store/song.store";
 import { ButtonIcon, TopBar } from "@/components";
-import { SearchFlatList } from "@/components/search";
+import { SongSectionList } from "@/components/songs";
 
 type Params = {
-  slug: string;
+  slug?: string;
 };
 
 const stageLang: Record<Stage, string> = {
@@ -29,13 +29,13 @@ export default function SongListScreen() {
   const { songsByStage, songs: TotalSongs } = useSongStore.getState();
 
   const songs = useMemo(() => {
-    if (isStage(slug)) return songsByStage[slug];
+    if (slug && isStage(slug)) return songsByStage[slug];
     return TotalSongs;
   }, []);
 
   const title = useMemo(() => {
-    if (slug === undefined) return "Todos los cantos";
-    if (isStage(slug)) return stageLang[slug];
+    if (slug && isStage(slug)) return stageLang[slug];
+    return "Todos los cantos";
   }, []);
 
   useFocusEffect(
@@ -65,7 +65,7 @@ export default function SongListScreen() {
         title={title}
         right={<ButtonIcon icon="ellipsis" onPress={() => {}} />}
       />
-      <MemoSearchFlatList
+      <SongSectionList
         title={title}
         showList={showList}
         headerHidden={headerHidden}
@@ -75,8 +75,6 @@ export default function SongListScreen() {
     </SafeAreaView>
   );
 }
-
-const MemoSearchFlatList = memo(SearchFlatList);
 
 const styles = StyleSheet.create({
   container: {
