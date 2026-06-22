@@ -1,5 +1,6 @@
 export const CONSTANT = {
   HEADER: 44,
+  LARGE_HEADER: 96,
   SECTION_HEADER: 32,
   SEARCHBAR: 44,
   BUTTON: 32,
