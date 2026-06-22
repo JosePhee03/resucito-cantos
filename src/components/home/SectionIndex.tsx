@@ -10,7 +10,7 @@ type SectionIndexProps = {
 
 export default function SectionIndex({ onPressItem }: SectionIndexProps) {
   return (
-    <View>
+    <View style={styles.section}>
       <View style={styles.sectionHearder}>
         <Text style={styles.sectionHearderTitle}>Pasos del camino</Text>
       </View>
@@ -20,6 +20,7 @@ export default function SectionIndex({ onPressItem }: SectionIndexProps) {
 }
 
 const styles = StyleSheet.create({
+  section: {},
   sectionHearder: {
     height: CONSTANT.SECTION_HEADER,
     justifyContent: "center",
