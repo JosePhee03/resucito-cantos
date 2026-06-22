@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors, fonts, spacing, typography } from "@/themes";
 import Icon from "../Icon";
 
-export default function SearchEmptyList() {
+export default function SongEmptyList() {
   const { top } = useSafeAreaInsets();
 
   return (
