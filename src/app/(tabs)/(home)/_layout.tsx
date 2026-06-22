@@ -1,6 +1,6 @@
-import { colors, radius } from "@/themes";
 import { Stack } from "expo-router";
-import React from "react";
+
+import { colors } from "@/themes";
 
 export default function Layout() {
   return (

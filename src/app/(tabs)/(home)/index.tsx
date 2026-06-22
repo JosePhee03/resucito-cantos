@@ -7,6 +7,7 @@ import { Stage } from "@/domain/song";
 import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { useOrientation } from "@/hooks/useOrientation";
 import { SectionIndex } from "@/components/home";
+import { ButtonText } from "@/components";
 
 export default function HomeScreen() {
   const isLandscape = useOrientation();
@@ -29,9 +30,13 @@ export default function HomeScreen() {
   return (
     <SafeAreaView edges={edges} style={styles.container}>
       <Header />
-      <ScrollView>
+      <ScrollView style={styles.content}>
         <View style={styles.headerContent}>
           <Text style={styles.contentTitle}>Índice</Text>
+          <ButtonText
+            onPress={() => handleNavigationSearch()}
+            text="Ver todo"
+          />
         </View>
         <SectionIndex onPressItem={handleNavigationSearch} />
       </ScrollView>
@@ -48,8 +53,12 @@ function Header() {
 }
 
 const styles = StyleSheet.create({
-  container: {},
-  section: {},
+  container: {
+    flex: 1,
+  },
+  content: {
+    paddingVertical: spacing.lg,
+  },
   header: {
     height: CONSTANT.HEADER,
     paddingHorizontal: spacing.md,
@@ -57,18 +66,20 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     paddingHorizontal: spacing.md,
-    height: CONSTANT.HEADER + spacing.sm,
+    height: CONSTANT.HEADER,
     paddingBottom: spacing.sm,
-    justifyContent: "flex-end",
-  },
-  contentTitle: {
-    fontFamily: fonts.bold,
-    fontSize: typography.xl,
-    color: colors.text,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
   },
   headerTitle: {
     fontFamily: fonts.bold,
     fontSize: typography.xl,
     color: colors.primary,
+  },
+  contentTitle: {
+    fontFamily: fonts.bold,
+    fontSize: typography.xl,
+    color: colors.text,
   },
 });

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
 import { Stage } from "@/domain/song";
 import { useSongStore } from "@/store/song.store";
 import Icon from "../Icon";
@@ -27,7 +27,7 @@ export default function StageList({ onPress }: StageListProps) {
   const totalSongsByStage = useSongStore.getState().totalSongsByStage;
 
   return (
-    <View>
+    <View style={styles.content}>
       {stages.map((stage, index) => (
         <Pressable
           onPress={() => onPress(stage)}
@@ -69,6 +69,7 @@ export default function StageList({ onPress }: StageListProps) {
 }
 
 const styles = StyleSheet.create({
+  content: {},
   stageItem: {
     flexDirection: "row",
     alignItems: "center",
