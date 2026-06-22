@@ -84,7 +84,6 @@ export function ButtonIcon({
       style={{
         paddingHorizontal: px && spacing[px],
       }}
-      hitSlop={32}
       height="auto"
       onPress={onPress}
     >
