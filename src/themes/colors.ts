@@ -2,12 +2,12 @@ import { palettes } from "./palettes";
 
 export const colors = {
   background: palettes.white,
-  backgroundSecondary: palettes.zinc50,
+  backgroundSecondary: palettes.zinc100,
 
   surface: palettes.neutral50,
   foreground: palettes.zinc800,
 
-  surfaceSecondary: palettes.zinc100,
+  surfaceSecondary: "#71717B24",
   foregroundSecondary: palettes.zinc500,
 
   surfaceTertiary: palettes.zinc50,
