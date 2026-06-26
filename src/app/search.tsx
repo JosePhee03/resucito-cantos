@@ -1,13 +1,13 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useCallback, useRef, useState } from "react";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { colors, CONSTANT, fonts, spacing, typography } from "@/themes";
-import { ButtonText, Icon, SearchBar } from "@/components";
-import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { TextInput } from "react-native-gesture-handler";
-import useSongDebounce from "@/hooks/useSongDebounce";
-import { SongItemMemo } from "@/components/songs/SongItem";
+import { Song } from "@/domain/song";
+import { useSongStore } from "@/store/song.store";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
+import { SearchList, SuggestionList } from "@/components/search";
+import { ButtonText, SearchBar } from "@/components";
 
 type Params = {
   stage?: string;
@@ -17,25 +17,21 @@ export default function SearchScreen() {
   const { stage } = useLocalSearchParams<Params>();
   const navigationLock = useRef(false);
   const [query, setQuery] = useState("");
-  const { songs, loading, debouncedQuery, total } = useSongDebounce(
-    query,
-    stage,
-  );
+  const [showList, setShowList] = useState(false);
   const searchRef = useRef<TextInput>(null);
+  const { filteredSongs } = useSongStore.getState();
+  const [songs, setSongs] = useState<Song[]>([]);
 
   useFocusEffect(
     useCallback(() => {
       navigationLock.current = false;
-    }, []),
+      const id = requestAnimationFrame(() => {
+        if (!showList) searchRef?.current?.focus();
+      });
+
+      return () => cancelAnimationFrame(id);
+    }, [showList]),
   );
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      searchRef?.current?.focus();
-    });
-
-    return () => cancelAnimationFrame(id);
-  }, []);
 
   const handleNavigationSong = useCallback((id: string) => {
     if (navigationLock.current) return;
@@ -43,58 +39,117 @@ export default function SearchScreen() {
     router.push(`/song/${id}`);
   }, []);
 
+  const handleOnPressSuggestion = (suggestion: string) => {
+    setQuery(suggestion);
+    searchRef?.current?.blur();
+    const searchSong = filteredSongs(suggestion, stage);
+    setSongs(searchSong);
+    setShowList(true);
+  };
+
   const handleOnChange = (query: string) => {
     setQuery(query);
   };
 
   const handleOnClear = () => {
     setQuery("");
+    searchRef?.current?.focus();
+  };
+
+  const handleOnSubmit = () => {
+    const searchSong = filteredSongs(query, stage);
+    setSongs(searchSong);
+    setShowList(true);
+  };
+
+  const handleOnFocus = () => {
+    setShowList(false);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <SearchBar
-          loading={loading}
-          searchRef={searchRef}
-          query={query}
           onChange={handleOnChange}
           onClear={handleOnClear}
+          searchRef={searchRef}
+          query={query}
+          onSubmit={handleOnSubmit}
+          onFocus={handleOnFocus}
         />
         <ButtonText onPress={router.back} text="Cancelar" />
       </View>
-      <FlatList
-        style={{ backgroundColor: colors.background }}
-        ListHeaderComponent={
+      {showList ? (
+        <>
           <View
             style={{
-              backgroundColor: colors.backgroundSecondary,
-              height: CONSTANT.HEADER + spacing.sm,
-              paddingHorizontal: spacing.md,
-              justifyContent: "center",
-              paddingBottom: spacing.sm,
+              flexDirection: "row",
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              borderColor: colors.border,
             }}
           >
-            <Text style={styles.title}>Resultados</Text>
-            <Text
-              style={{
-                fontFamily: fonts.medium,
-                fontSize: typography.sm,
-                color: colors.textTertiary,
-              }}
-            >{`${songs.length} de ${total} cantos`}</Text>
+            <Pressable
+              style={({ pressed }) => [
+                {
+                  flex: 1,
+                  height: CONSTANT.BUTTON,
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+                pressed && { backgroundColor: colors.pressed },
+              ]}
+            >
+              <View
+                style={{
+                  position: "absolute",
+                  backgroundColor: colors.primary,
+                  height: StyleSheet.hairlineWidth * 4,
+                  width: CONSTANT.BUTTON,
+                  borderRadius: radius.xs,
+                  bottom: 0,
+                }}
+              />
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={{
+                  fontFamily: fonts.semibold,
+                  fontSize: typography.sm,
+                  color: colors.text,
+                }}
+              >
+                Precatecumenado
+              </Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                {
+                  flex: 1,
+                  height: CONSTANT.BUTTON,
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+                pressed && { backgroundColor: colors.pressed },
+              ]}
+            >
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={{
+                  fontFamily: fonts.medium,
+                  fontSize: typography.sm,
+                  color: colors.text,
+                }}
+              >
+                Todo los cantos
+              </Text>
+            </Pressable>
           </View>
-        }
-        keyboardShouldPersistTaps="handled"
-        data={songs}
-        renderItem={({ item }) => (
-          <SongItemMemo
-            song={item}
-            key={item.id}
-            onPress={handleNavigationSong}
-          />
-        )}
-      />
+          <SearchList onPressItem={handleNavigationSong} songs={songs} />
+        </>
+      ) : (
+        <SuggestionList onPressItem={handleOnPressSuggestion} />
+      )}
     </SafeAreaView>
   );
 }
