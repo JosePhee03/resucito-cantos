@@ -1,22 +1,31 @@
-import { Ref, useCallback } from "react";
+import { Ref } from "react";
 import {
   ActivityIndicator,
   Pressable,
   StyleSheet,
+  Text,
   TextInput,
   View,
 } from "react-native";
 
-import { colors, CONSTANT, fonts, radius, typography } from "@/themes";
+import { colors, CONSTANT, fonts, radius, spacing, typography } from "@/themes";
 import Icon from "./Icon";
 
 type SearchBarProps = {
   onChange?: (query: string) => void;
   query?: string;
   onSubmit?: () => void;
-  onPress?: () => void;
   searchRef?: Ref<TextInput>;
   editable?: boolean;
+  onClear?: () => void;
+  loading?: boolean;
+  onFocus?: () => void;
+};
+
+type SearchBarButtonProps = {
+  query?: string;
+  onPress?: () => void;
+  searchRef?: Ref<TextInput>;
   onClear?: () => void;
   loading?: boolean;
 };
@@ -25,22 +34,23 @@ export default function SearchBar({
   onChange,
   query = "",
   onSubmit,
-  onPress,
   searchRef,
   editable,
   onClear,
+  onFocus,
   loading,
 }: SearchBarProps) {
-  const handleOnPress = useCallback(() => !loading && onPress?.(), [loading]);
-
   return (
     <View style={styles.searchBar}>
       <View style={styles.button}>
-        <Icon name="search" color={colors.foregroundSecondary} />
+        <Icon name="search" size={20} color={colors.foregroundSecondary} />
       </View>
       <View style={styles.searchTextContainer}>
         <TextInput
+          cursorColor={colors.primary}
+          selectionColor={colors.primary}
           disableFullscreenUI={true}
+          onFocus={onFocus}
           editable={editable}
           ref={searchRef}
           onChangeText={onChange}
@@ -70,13 +80,32 @@ export default function SearchBar({
   );
 }
 
+export function SearchBarButton({ onPress }: SearchBarButtonProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.searchBar,
+        pressed && { backgroundColor: colors.pressed },
+      ]}
+    >
+      <View style={styles.button}>
+        <Icon name="search" size={20} color={colors.foregroundSecondary} />
+      </View>
+      <View style={styles.searchTextContainer}>
+        <Text style={styles.searchButtonText}>Buscar cantos</Text>
+      </View>
+    </Pressable>
+  );
+}
+
 function ButtonClear({ onClear }: { onClear?: () => void }) {
   return (
     <Pressable
       onPress={onClear}
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
     >
-      <Icon name="close" size={24} color={colors.foregroundSecondary} />
+      <Icon name="close" size={20} color={colors.foregroundSecondary} />
     </Pressable>
   );
 }
@@ -89,20 +118,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    height: CONSTANT.SEARCHBAR,
-    width: CONSTANT.SEARCHBAR,
+    height: CONSTANT.BUTTON,
+    width: CONSTANT.BUTTON,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: radius.lg,
+  },
+  searchIcon: {
+    height: CONSTANT.BUTTON,
+    justifyContent: "center",
+    paddingHorizontal: spacing.xs,
   },
   searchBar: {
     flex: 1,
     height: CONSTANT.SEARCHBAR,
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
+    borderRadius: radius.sm,
     backgroundColor: colors.surfaceSecondary,
     overflow: "hidden",
   },
@@ -121,5 +153,10 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: typography.md,
     color: colors.text,
+  },
+  searchButtonText: {
+    fontFamily: fonts.regular,
+    fontSize: typography.md,
+    color: colors.foregroundSecondary,
   },
 });
