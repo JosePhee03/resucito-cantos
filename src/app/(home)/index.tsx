@@ -7,7 +7,7 @@ import { Stage } from "@/domain/song";
 import { colors, fonts, spacing, typography, CONSTANT } from "@/themes";
 import { useOrientation } from "@/hooks/useOrientation";
 import { SectionIndex } from "@/components/home";
-import { ButtonText } from "@/components";
+import { ButtonText, SearchBarButton } from "@/components";
 
 export default function HomeScreen() {
   const isLandscape = useOrientation();
@@ -17,10 +17,16 @@ export default function HomeScreen() {
     navigationLock.current = false;
   });
 
-  const handleNavigationSearch = (stage?: Stage) => {
+  const handleNavigationSongsList = (stage?: Stage) => {
     if (navigationLock.current) return;
     navigationLock.current = true;
     router.push(`/songs/${stage}`);
+  };
+
+  const handleNavigationSearch = (stage?: Stage) => {
+    if (navigationLock.current) return;
+    navigationLock.current = true;
+    router.push("/search");
   };
 
   const edges = useMemo<Edges>(() => {
@@ -33,12 +39,12 @@ export default function HomeScreen() {
       <ScrollView style={styles.content}>
         <View style={styles.headerContent}>
           <Text style={styles.contentTitle}>Índice</Text>
-          <ButtonText
-            onPress={() => handleNavigationSearch()}
-            text="Ver todo"
-          />
+          <ButtonText onPress={handleNavigationSongsList} text="Ver todo" />
         </View>
-        <SectionIndex onPressItem={handleNavigationSearch} />
+        <View style={styles.searchContainer}>
+          <SearchBarButton onPress={handleNavigationSearch} />
+        </View>
+        <SectionIndex onPressItem={handleNavigationSongsList} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -76,6 +82,10 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: typography.xl,
     color: colors.primary,
+  },
+  searchContainer: {
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.lg,
   },
   contentTitle: {
     fontFamily: fonts.bold,
