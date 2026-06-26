@@ -12,7 +12,7 @@ export default function SectionIndex({ onPressItem }: SectionIndexProps) {
   return (
     <View style={styles.section}>
       <View style={styles.sectionHearder}>
-        <Text style={styles.sectionHearderTitle}>Pasos del camino</Text>
+        <Text style={styles.sectionHearderTitle}>PASOS DEL CAMINO</Text>
       </View>
       <StageList onPress={(p) => onPressItem(p)} />
     </View>
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   sectionHearderTitle: {
     fontFamily: fonts.medium,
-    fontSize: typography.md,
+    fontSize: typography.xs,
     color: colors.textTertiary,
   },
 });

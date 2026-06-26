@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: CONSTANT.PAGE_BADGE,
     height: CONSTANT.PAGE_BADGE,
-    borderRadius: radius.sm,
+    borderRadius: radius.xs,
   },
   songDeteails: {
     flex: 1,

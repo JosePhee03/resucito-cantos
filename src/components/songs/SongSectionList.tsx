@@ -63,7 +63,7 @@ export default function SongSectionList({
             height: 22,
             justifyContent: "center",
             paddingHorizontal: spacing.md,
-            backgroundColor: colors.surfaceSecondary,
+            backgroundColor: colors.backgroundSecondary,
           }}
         >
           <Text
