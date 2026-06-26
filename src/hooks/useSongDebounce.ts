@@ -30,6 +30,7 @@ export default function useSongDebounce(
   const total = useMemo(() => {
     if (!stage) return allSongs.length;
     if (isStage(stage)) return songsByStage[stage].length;
+    return 0;
   }, []);
 
   return {
