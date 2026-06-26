@@ -36,10 +36,17 @@ export default function RootLayout() {
             screenOptions={{
               headerShown: false,
               statusBarStyle: "dark",
-              contentStyle: { backgroundColor: colors.background },
             }}
           >
             <Stack.Screen name="(home)" />
+            <Stack.Screen
+              name="search"
+              options={{ contentStyle: { backgroundColor: colors.background } }}
+            />
+            <Stack.Screen
+              name="song/[id]"
+              options={{ contentStyle: { backgroundColor: colors.background } }}
+            />
           </Stack>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
